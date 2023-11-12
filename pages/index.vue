@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const world = 'world'
+</script>
 
 <template>
-  <div class="text-yellow">{{ $t('hello') }} World</div>
+  <div class="text-yellow">{{ $t('hello') }} {{ world }}</div>
 </template>
 
 <style scoped></style>
