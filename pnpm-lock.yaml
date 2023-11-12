@@ -11,6 +11,7 @@ specifiers:
   '@nuxtjs/i18n': 8.0.0-rc.5
   '@nuxtjs/tailwindcss': ^6.9.4
   '@typescript-eslint/eslint-plugin': ^6.10.0
+  dotenv: ^16.3.1
   eslint: ^8.53.0
   eslint-config-standard: ^17.1.0
   eslint-config-standard-with-typescript: ^39.1.1
@@ -18,10 +19,13 @@ specifiers:
   eslint-plugin-n: ^16.3.1
   eslint-plugin-promise: ^6.1.1
   eslint-plugin-vue: ^9.18.1
+  eventsource-parser: ^1.1.1
   husky: ^8.0.0
   nuxt: ^3.8.1
   prettier: ^3.0.3
+  tsx: ^4.1.1
   typescript: ^5.2.2
+  undici: ^5.27.2
   vue: ^3.3.8
   vue-eslint-parser: ^9.3.2
   vue-router: ^4.2.5
@@ -37,6 +41,7 @@ devDependencies:
   '@nuxtjs/i18n': 8.0.0-rc.5_vue-router@4.2.5+vue@3.3.8
   '@nuxtjs/tailwindcss': 6.9.4
   '@typescript-eslint/eslint-plugin': 6.10.0_5iy6f2d3forlnf27wdbuobyvmm
+  dotenv: 16.3.1
   eslint: 8.53.0
   eslint-config-standard: 17.1.0_xlmioodarpdp7fqhc47kgujxqa
   eslint-config-standard-with-typescript: 39.1.1_rtt2525tuipkjlo7vyjn5umlny
@@ -44,10 +49,13 @@ devDependencies:
   eslint-plugin-n: 16.3.1_eslint@8.53.0
   eslint-plugin-promise: 6.1.1_eslint@8.53.0
   eslint-plugin-vue: 9.18.1_eslint@8.53.0
+  eventsource-parser: 1.1.1
   husky: 8.0.3
   nuxt: 3.8.1_5iy6f2d3forlnf27wdbuobyvmm
   prettier: 3.0.3
+  tsx: 4.1.1
   typescript: 5.2.2
+  undici: 5.27.2
   vue: 3.3.8_typescript@5.2.2
   vue-eslint-parser: 9.3.2_eslint@8.53.0
   vue-router: 4.2.5_vue@3.3.8
@@ -4411,6 +4419,11 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
+  /eventsource-parser/1.1.1:
+    resolution: {integrity: sha512-3Ej2iLj6ZnX+5CMxqyUb8syl9yVZwcwm8IIMrOJlF7I51zxOOrRlU3zxSb/6hFbl03ts1ZxHAGJdWLZOLyKG7w==}
+    engines: {node: '>=14.18'}
+    dev: true
+
   /execa/5.1.1:
     resolution: {integrity: sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==}
     engines: {node: '>=10'}
@@ -8479,6 +8492,18 @@ packages:
   /tsscmp/1.0.6:
     resolution: {integrity: sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==}
     engines: {node: '>=0.6.x'}
+    dev: true
+
+  /tsx/4.1.1:
+    resolution: {integrity: sha512-zyPn5BFMB0TB5kMLbYPNx4x/oL/oSlaecdKCv6WeJ0TeSEfx8RTJWjuB5TZ2dSewktgfBsBO/HNA9mrMWqLXMA==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+    dependencies:
+      esbuild: 0.18.20
+      get-tsconfig: 4.7.2
+      source-map-support: 0.5.21
+    optionalDependencies:
+      fsevents: 2.3.3
     dev: true
 
   /tuf-js/2.1.0:
