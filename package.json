@@ -46,6 +46,7 @@
     "eslint-plugin-vue": "^9.18.1",
     "eventsource-parser": "^1.1.1",
     "husky": "^8.0.0",
+    "json-stringify-pretty-compact": "^4.0.0",
     "nuxt": "^3.8.1",
     "prettier": "^3.0.3",
     "tsx": "^4.1.1",

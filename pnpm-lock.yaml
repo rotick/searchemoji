@@ -21,6 +21,7 @@ specifiers:
   eslint-plugin-vue: ^9.18.1
   eventsource-parser: ^1.1.1
   husky: ^8.0.0
+  json-stringify-pretty-compact: ^4.0.0
   nuxt: ^3.8.1
   prettier: ^3.0.3
   tsx: ^4.1.1
@@ -51,6 +52,7 @@ devDependencies:
   eslint-plugin-vue: 9.18.1_eslint@8.53.0
   eventsource-parser: 1.1.1
   husky: 8.0.3
+  json-stringify-pretty-compact: 4.0.0
   nuxt: 3.8.1_5iy6f2d3forlnf27wdbuobyvmm
   prettier: 3.0.3
   tsx: 4.1.1
@@ -5553,6 +5555,10 @@ packages:
 
   /json-stable-stringify-without-jsonify/1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
+    dev: true
+
+  /json-stringify-pretty-compact/4.0.0:
+    resolution: {integrity: sha512-3CNZ2DnrpByG9Nqj6Xo8vqbjT4F6N+tb4Gb28ESAZjYZ5yqvmc56J+/kuIwkaAMOyblTQhUW7PxMkUb8Q36N3Q==}
     dev: true
 
   /json5/1.0.2:

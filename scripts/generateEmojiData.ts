@@ -1,9 +1,11 @@
-import { fetch } from 'undici'
-function parseTextToJson (text) {
+// import { fetch } from 'undici'
+import stringify from 'json-stringify-pretty-compact'
+import { promises as fs } from 'fs'
+function parseTextToJson (text: string) {
   const lines = text.split('\n')
-  const json = []
-  let group = null
-  let subgroup
+  const json: any[] = []
+  let group: any = null
+  let subgroup: any
 
   lines.forEach(line => {
     if (line.startsWith('# group:')) {
@@ -22,11 +24,11 @@ function parseTextToJson (text) {
       // Ignore comments
     } else {
       const code = line.substring(0, line.indexOf(';')).trim()
-      const emoji = line.substring(line.indexOf('#') + 1, line.indexOf(' E')).trim()
-      const regex = / E(\d+\.\d+) (.+)/
+      const regex = /# (.+) E(\d+\.\d+) (.+)/
       const match = line.match(regex)
-      const version = match[1]
-      const name = match[2]
+      const emoji = match?.[1]
+      const version = match?.[2]
+      const name = match?.[3]
 
       subgroup.data.push({
         code,
@@ -40,9 +42,11 @@ function parseTextToJson (text) {
   return json
 }
 async function main () {
-  const response = await fetch('https://unicode.org/Public/emoji/latest/emoji-test.txt')
-  const res = await response.text()
+  // const response = await fetch('https://unicode.org/Public/emoji/latest/emoji-test.txt')
+  // const res = await response.text()
+  const res = await fs.readFile('./data/emoji-test.txt', { encoding: 'utf-8' })
   const json = parseTextToJson(res)
-  console.log(JSON.stringify(json))
+  // console.log(stringify(json))
+  await fs.writeFile('./data/emoji.json', stringify(json))
 }
 main()
