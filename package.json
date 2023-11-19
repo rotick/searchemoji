@@ -7,6 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "generateEmojiData": "tsx ./scripts/generateEmojiData.ts",
+    "generateKeywords": "tsx ./scripts/generateKeywords.ts",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "prepare": "husky install"
@@ -55,5 +56,8 @@
     "vue": "^3.3.8",
     "vue-eslint-parser": "^9.3.2",
     "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@akryum/flexsearch-es": "^0.7.32"
   }
 }

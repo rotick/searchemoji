@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@akryum/flexsearch-es': ^0.7.32
   '@commitlint/cli': ^18.4.1
   '@commitlint/config-conventional': ^18.4.0
   '@iconify/json': ^2.2.140
@@ -30,6 +31,9 @@ specifiers:
   vue: ^3.3.8
   vue-eslint-parser: ^9.3.2
   vue-router: ^4.2.5
+
+dependencies:
+  '@akryum/flexsearch-es': 0.7.32
 
 devDependencies:
   '@commitlint/cli': 18.4.1_typescript@5.2.2
@@ -68,6 +72,10 @@ packages:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /@akryum/flexsearch-es/0.7.32:
+    resolution: {integrity: sha512-jA9b9oYefRJkuhGAjd9lB2iVkOFzgdzuy1giserUo+usstEjuNSe9Pod6ZfC8S9xvCmPT2ovY09DNFnEQSgpMA==}
+    dev: false
 
   /@alloc/quick-lru/5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}

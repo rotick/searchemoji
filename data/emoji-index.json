@@ -5,7 +5,11 @@
     "version": "1.0",
     "name": "grinning face",
     "group": "Smileys & Emotion",
-    "subGroup": "face-smiling"
+    "subGroup": "face-smiling",
+    "keywords": {
+      "en": ["smile", "laugh", "happy", "haha"],
+      "zh": ["嘿嘿", "咧嘴", "笑脸", "开心", "喜悦", "大笑"]
+    }
   },
   {
     "code": "1F603",
@@ -13,7 +17,11 @@
     "version": "0.6",
     "name": "grinning face with big eyes",
     "group": "Smileys & Emotion",
-    "subGroup": "face-smiling"
+    "subGroup": "face-smiling",
+    "keywords": {
+      "en": ["smile", "laugh", "happy", "haha"],
+      "zh": ["哈哈", "咧嘴", "笑脸", "开心", "喜悦", "大笑"]
+    }
   },
   {
     "code": "1F604",

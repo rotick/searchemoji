@@ -1,28 +1,19 @@
 // import { fetch } from 'undici'
 import stringify from 'json-stringify-pretty-compact'
 import { promises as fs } from 'fs'
+
 function parseTextToJson (text: string) {
   const lines = text.split('\n')
   const json: any[] = []
-  let group: any = null
-  let subgroup: any
+  let group = ''
+  let subGroup = ''
 
   lines.forEach(line => {
     if (line.startsWith('# group:')) {
-      group = {
-        name: line.split(': ')[1],
-        children: []
-      }
-      json.push(group)
+      group = line.split(': ')[1]?.trim()
     } else if (line.startsWith('# subgroup:')) {
-      subgroup = {
-        name: line.split(': ')[1],
-        data: []
-      }
-      group.children.push(subgroup)
-    } else if (line.startsWith('#') || !line) {
-      // Ignore comments
-    } else {
+      subGroup = line.split(': ')[1]?.trim()
+    } else if (!line.startsWith('#') && line) {
       const code = line.substring(0, line.indexOf(';')).trim()
       const regex = /# (.+) E(\d+\.\d+) (.+)/
       const match = line.match(regex)
@@ -30,11 +21,13 @@ function parseTextToJson (text: string) {
       const version = match?.[2]
       const name = match?.[3]
 
-      subgroup.data.push({
+      json.push({
         code,
         emoji,
         version,
-        name
+        name,
+        group,
+        subGroup
       })
     }
   })

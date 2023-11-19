@@ -18,7 +18,7 @@ export async function chatGPT (message: string) {
   const messages: ChatMessage[] = [
     {
       role: 'system',
-      content: 'You are a helpful assistant who is proficient in various languages.'
+      content: 'You are a helpful assistant who is proficient in various languages and designed to output JSON.'
     },
     { role: 'user', content: message }
   ]
@@ -41,7 +41,8 @@ export const generatePayload = (apiKey: string, messages: ChatMessage[]): Reques
     model,
     messages,
     temperature: 1,
-    stream: false
+    stream: false,
+    response_format: { type: 'json_object' }
   })
 })
 
