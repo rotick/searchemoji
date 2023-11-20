@@ -2,16 +2,16 @@
 import { Document } from '@akryum/flexsearch-es'
 const flexSearch = new Document({
   document: {
-    id: 'code',
-    tag: 'group',
+    id: 'c',
+    tag: 'g',
     index: [
       {
-        field: 'name',
+        field: 'n',
         tokenize: 'forward',
         resolution: 9
       },
       {
-        field: 'keywords:en',
+        field: 'k:en',
         tokenize: 'forward',
         resolution: 8
       }
@@ -49,23 +49,23 @@ const groupData = computed(() => {
   const list = searchResult.value.length ? searchResult.value : data.value
   const group: any[] = []
   list.forEach((d: any) => {
-    const inGroup = group.find(g => g.name === d.group)
+    const inGroup = group.find(g => g.name === d.g)
     if (!inGroup) {
       group.push({
-        name: d.group,
-        icon: d.emoji,
+        name: d.g,
+        icon: d.e,
         children: [
           {
-            name: d.subGroup,
+            name: d.s,
             data: [d]
           }
         ]
       })
     } else {
-      const inSubGroup = inGroup.children.find((g: any) => g.name === d.subGroup)
+      const inSubGroup = inGroup.children.find((g: any) => g.name === d.s)
       if (!inSubGroup) {
         inGroup.children.push({
-          name: d.subGroup,
+          name: d.s,
           data: [d]
         })
       } else {
@@ -98,8 +98,8 @@ const fontSize = ref(24)
         <div v-for="sg in g.children" :key="sg.name" class="bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80">
           <h3>{{ sg.name }}</h3>
           <div>
-            <NuxtLink v-for="d in sg.data" :key="d.emoji" :style="{ fontSize: `${fontSize}px` }">
-              {{ d.emoji }}
+            <NuxtLink v-for="d in sg.data" :key="d.e" :style="{ fontSize: `${fontSize}px` }">
+              {{ d.e }}
             </NuxtLink>
           </div>
         </div>

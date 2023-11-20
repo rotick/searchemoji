@@ -33,8 +33,8 @@ async function main () {
     }
   ]
   res.forEach(r => {
-    const target = emojiData.find(ed => ed.emoji === r.emoji)
-    target.keywords = r.keywords
+    const target = emojiData.find(ed => ed.e === r.emoji)
+    target.k = r.keywords
   })
   await fs.writeFile(file, stringify(emojiData))
 }

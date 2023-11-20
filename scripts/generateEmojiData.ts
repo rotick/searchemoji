@@ -14,20 +14,22 @@ function parseTextToJson (text: string) {
     } else if (line.startsWith('# subgroup:')) {
       subGroup = line.split(': ')[1]?.trim()
     } else if (!line.startsWith('#') && line) {
-      const code = line.substring(0, line.indexOf(';')).trim()
-      const regex = /# (.+) E(\d+\.\d+) (.+)/
+      const regex = /(.+) ; (.+) # (.+) E(\d+\.\d+) (.+)/
       const match = line.match(regex)
-      const emoji = match?.[1]
-      const version = match?.[2]
-      const name = match?.[3]
+      const code = match?.[1].trim()
+      const quality = match?.[2].trim()
+      const emoji = match?.[3]
+      const version = match?.[4]
+      const name = match?.[5]
 
       json.push({
-        code,
-        emoji,
-        version,
-        name,
-        group,
-        subGroup
+        c: code,
+        q: quality,
+        e: emoji,
+        v: version,
+        n: name,
+        g: group,
+        s: subGroup
       })
     }
   })
