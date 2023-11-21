@@ -1,6 +1,7 @@
 // import { fetch } from 'undici'
 import stringify from 'json-stringify-pretty-compact'
 import { promises as fs } from 'fs'
+import { qualityMap } from '~/utils'
 
 function parseTextToJson (text: string) {
   const lines = text.split('\n')
@@ -17,14 +18,14 @@ function parseTextToJson (text: string) {
       const regex = /(.+) ; (.+) # (.+) E(\d+\.\d+) (.+)/
       const match = line.match(regex)
       const code = match?.[1].trim()
-      const quality = match?.[2].trim()
+      const quality = match?.[2].trim() || ''
       const emoji = match?.[3]
       const version = match?.[4]
       const name = match?.[5]
 
       json.push({
         c: code,
-        q: quality,
+        q: qualityMap[quality],
         e: emoji,
         v: version,
         n: name,
@@ -41,7 +42,6 @@ async function main () {
   // const res = await response.text()
   const res = await fs.readFile('./data/emoji-test.txt', { encoding: 'utf-8' })
   const json = parseTextToJson(res)
-  // console.log(stringify(json))
   await fs.writeFile('./data/emoji.json', stringify(json))
 }
 main()

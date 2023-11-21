@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Document } from '@akryum/flexsearch-es'
+import { qualityMap } from '~/utils'
+
 const flexSearch = new Document({
   document: {
     id: 'c',
@@ -45,10 +47,57 @@ function search () {
     .flat()
   console.log(searchResult.value)
 }
+
+const groupBySubGroup = ref(false)
+const qualityOptions = Object.keys(qualityMap)
+const quality = ref(['fully-qualified', 'component'])
+const transformQuality = computed(() => {
+  return quality.value.map(q => qualityMap[q])
+})
+const skinToneOptions = [
+  {
+    name: 'light',
+    emoji: '🏻'
+  },
+  {
+    name: 'medium-light',
+    emoji: '🏼'
+  },
+  {
+    name: 'medium',
+    emoji: '🏽'
+  },
+  {
+    name: 'medium-dark',
+    emoji: '🏾'
+  },
+  {
+    name: 'dark',
+    emoji: '🏿'
+  }
+]
+const skinTone = ref<string[]>([])
+const fullSkinTone = computed(() => skinTone.value.map(st => `${st} skin tone`))
+function toggleSkinTone (name: string) {
+  const index = skinTone.value.findIndex(n => n === name)
+  if (index > -1) {
+    skinTone.value.splice(index, 1)
+  } else {
+    skinTone.value.push(name)
+  }
+}
+
 const groupData = computed(() => {
   const list = searchResult.value.length ? searchResult.value : data.value
+  const filtered = list.filter((li: any) => {
+    if (transformQuality.value.includes(li.q)) return true
+    // todo has bug here
+    if (!li.n.includes('skin tone') || (li.n.includes('skin tone') && (fullSkinTone.value.includes(li.n) || li.s === 'skin-tone'))) return true
+    return false
+  })
+  console.log(filtered.length)
   const group: any[] = []
-  list.forEach((d: any) => {
+  filtered.forEach((d: any) => {
     const inGroup = group.find(g => g.name === d.g)
     if (!inGroup) {
       group.push({
@@ -92,10 +141,27 @@ const fontSize = ref(24)
             <i class="icon-[solar--magnifer-linear] text-lg md:text-2xl color-secondary shrink-0" role="img" aria-hidden="true" />
           </button>
         </div>
+        <div>
+          <div class="flex">Group: <Toggle v-model="groupBySubGroup" /></div>
+          <div class="flex">
+            Quality: <label v-for="q in qualityOptions" :key="q"><input v-model="quality" type="checkbox" :value="q">{{ q }}</label>
+          </div>
+          <div class="flex">
+            Skin tone:
+            <div
+              v-for="st in skinToneOptions"
+              :key="st.name"
+              class="border border-1 cursor-default"
+              :class="skinTone.includes(st.name) ? 'border-rose-500' : 'border-transparent'"
+              @click="toggleSkinTone(st.name)"
+            >
+              {{ st.emoji }}
+            </div>
+          </div>
+        </div>
       </div>
-      <div v-for="g in groupData" :key="g.name">
-        <h2>{{ g.name }}</h2>
-        <div v-for="sg in g.children" :key="sg.name" class="bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80">
+      <div v-for="g in groupData" :key="g.name" class="card mb-6">
+        <div v-for="sg in g.children" :key="sg.name">
           <h3>{{ sg.name }}</h3>
           <div>
             <NuxtLink v-for="d in sg.data" :key="d.e" :style="{ fontSize: `${fontSize}px` }">

@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer components {
+  .bg-body {
+    @apply bg-stone-100 dark:bg-stone-900;
+  }
+  .color-title {
+    @apply text-stone-800 dark:text-white;
+  }
+  .color-action {
+    @apply text-stone-700 dark:text-stone-200;
+  }
+  .color-secondary {
+    @apply text-stone-400 dark:text-stone-500;
+  }
+  /* 输入框的 placeholder 和 disable 颜色一致 */
+  .color-disable {
+    @apply text-stone-300 dark:text-stone-600;
+  }
+  .border-main {
+    @apply border-stone-200 dark:border-stone-700
+  }
+  .card{
+    @apply bg-white/90 dark:bg-stone-800/90 border border-stone-200/80 dark:border-stone-700/80 backdrop-blur-xl
+  }
+  .card .card{
+    @apply bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700
+  }
+  .btn {
+    @apply font-medium rounded-lg text-sm px-7 md:px-5 py-2.5 focus:outline-none inline-flex justify-center items-center disabled:bg-stone-200 dark:disabled:bg-stone-700 disabled:cursor-not-allowed
+  }
+  .btn-xs{
+    @apply px-2 py-0
+  }
+  .btn-primary {
+    @apply text-white bg-fuchsia-500 hover:bg-fuchsia-600 disabled:bg-stone-200 dark:disabled:bg-stone-800 dark:disabled:text-stone-700
+  }
+  .btn-outline{
+    @apply text-fuchsia-500 hover:text-white border border-fuchsia-500 hover:bg-fuchsia-500
+  }
+  .checkbox{
+    @apply w-4 h-4 text-fuchsia-500/80 bg-stone-100 border-stone-300 rounded dark:bg-stone-700 dark:border-stone-600
+    checked:bg-fuchsia-500/80 dark:checked:bg-current dark:checked:border-transparent
+    indeterminate:bg-none indeterminate:bg-stone-100 indeterminate:border-stone-300 dark:indeterminate:bg-stone-700 dark:indeterminate:border-stone-600
+    disabled:opacity-50 disabled:cursor-not-allowed focus:ring-0 focus:ring-transparent focus:ring-offset-transparent border
+    focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900
+  }
+  .tooltip{
+    @apply relative after:absolute after:top-0 after:left-[50%] after:w-[auto] after:transtone-x-[-50%] after:transtone-y-[-105%] after:whitespace-nowrap after:z-10 after:bg-stone-900 after:shadow-sm after:text-white after:py-1 after:px-2 after:text-sm after:rounded-lg after:content-[attr(data-tip)] after:hidden hover:after:block
+  }
+}
+html{
+  font-family: Nunito Sans, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", system-ui;
+}
+.dark {
+  color-scheme: dark;
+}
+body {
+  @apply bg-stone-100 dark:bg-stone-900 text-stone-500 dark:text-stone-400
+}
+input::placeholder{
+  @apply text-stone-300 dark:text-stone-600;
+}
+a[target=_blank]{
+  @apply inline-flex items-center text-stone-700 dark:text-stone-200 font-medium;
+}
+a[target=_blank]:hover{
+  text-decoration: underline wavy;
+  @apply text-fuchsia-500
+}
+a[target=_blank]:after{
+  content: '';display: inline-block;width: 1em;height:1em;margin-left:4px;
+  mask-size:100%;mask-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnIGZpbGw9ImN1cnJlbnRDb2xvciI+PHBhdGggZD0iTTEyIDEuMjVoLS4wNTdjLTIuMzA5IDAtNC4xMTggMC01LjUzLjE5Yy0xLjQ0NC4xOTQtMi41ODQuNi0zLjQ3OSAxLjQ5NGMtLjg5NS44OTUtMS4zIDIuMDM1LTEuNDk0IDMuNDhjLS4xOSAxLjQxMS0uMTkgMy4yMi0uMTkgNS41Mjl2LjExNGMwIDIuMzA5IDAgNC4xMTguMTkgNS41M2MuMTk0IDEuNDQ0LjYgMi41ODQgMS40OTQgMy40NzljLjg5NS44OTUgMi4wMzUgMS4zIDMuNDggMS40OTRjMS40MTEuMTkgMy4yMi4xOSA1LjUyOS4xOWguMTE0YzIuMzA5IDAgNC4xMTggMCA1LjUzLS4xOWMxLjQ0NC0uMTk0IDIuNTg0LS42IDMuNDc5LTEuNDk0Yy44OTUtLjg5NSAxLjMtMi4wMzUgMS40OTQtMy40OGMuMTktMS40MTEuMTktMy4yMi4xOS01LjUyOVYxMmEuNzUuNzUgMCAwIDAtMS41IDBjMCAyLjM3OC0uMDAyIDQuMDg2LS4xNzYgNS4zODZjLS4xNzIgMS4yNzktLjUgMi4wNS0xLjA2OSAyLjYyYy0uNTcuNTY5LTEuMzQuODk2LTIuNjE5IDEuMDY4Yy0xLjMuMTc0LTMuMDA4LjE3Ni01LjM4Ni4xNzZzLTQuMDg2LS4wMDItNS4zODYtLjE3NmMtMS4yNzktLjE3Mi0yLjA1LS41LTIuNjItMS4wNjljLS41NjktLjU3LS44OTYtMS4zNC0xLjA2OC0yLjYxOWMtLjE3NC0xLjMtLjE3Ni0zLjAwOC0uMTc2LTUuMzg2cy4wMDItNC4wODYuMTc2LTUuMzg2Yy4xNzItMS4yNzkuNS0yLjA1IDEuMDY5LTIuNjJjLjU3LS41NjkgMS4zNC0uODk2IDIuNjE5LTEuMDY4YzEuMy0uMTc0IDMuMDA4LS4xNzYgNS4zODYtLjE3NmEuNzUuNzUgMCAwIDAgMC0xLjVaIi8+PHBhdGggZD0iTTEyLjQ3IDEwLjQ3YS43NS43NSAwIDEgMCAxLjA2IDEuMDZsNy43Mi03LjcydjMuNTM0YS43NS43NSAwIDAgMCAxLjUgMFYyYS43NS43NSAwIDAgMC0uNzUtLjc1aC01LjM0NGEuNzUuNzUgMCAwIDAgMCAxLjVoMy41MzNsLTcuNzIgNy43MloiLz48L2c+PC9zdmc+);
+  background-position: center right;background-color: currentColor;background-repeat: no-repeat;
+}
+.nested-enter-active,
+.nested-leave-active {
+  transition: all 0.2s ease;
+}
+.nested-leave-active {
+  /*transition-delay: 0.2s;*/
+}
+
+.nested-enter-from,
+.nested-leave-to {
+  opacity: 0;
+}
+.nested-enter-active .inner,
+.nested-leave-active .inner {
+  transition: all 0.2s ease;
+}
+.nested-enter-active .inner {
+  transition-delay: 0.1s;
+}
+
+.nested-enter-from .inner,
+.nested-leave-to .inner {
+  transform: transtoneY(48px);
+  opacity: 0;
+}
