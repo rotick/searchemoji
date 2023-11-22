@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Document } from '@akryum/flexsearch-es'
 import { qualityMap } from '~/utils'
+import { watchDebounced } from '@vueuse/core'
 
 const flexSearch = new Document({
   document: {
@@ -45,8 +46,14 @@ function search () {
       return item.result.map((r: any) => r.doc)
     })
     .flat()
-  console.log(searchResult.value)
 }
+watchDebounced(
+  keyword,
+  () => {
+    search()
+  },
+  { debounce: 400, maxWait: 1000 }
+)
 
 const groupBySubGroup = ref(false)
 const qualityOptions = Object.keys(qualityMap)
@@ -87,15 +94,16 @@ function toggleSkinTone (name: string) {
   }
 }
 
+const emojiCount = ref(0)
 const groupData = computed(() => {
-  const list = searchResult.value.length ? searchResult.value : data.value
-  const filtered = list.filter((li: any) => {
-    if (transformQuality.value.includes(li.q)) return true
-    // todo has bug here
-    if (!li.n.includes('skin tone') || (li.n.includes('skin tone') && (fullSkinTone.value.includes(li.n) || li.s === 'skin-tone'))) return true
-    return false
-  })
-  console.log(filtered.length)
+  const list = keyword.value ? searchResult.value : data.value
+  const filtered = list.filter(
+    (li: any) =>
+      transformQuality.value.includes(li.q) &&
+      (!li.n.includes('skin tone') || (li.n.includes('skin tone') && (fullSkinTone.value.find(fst => li.n.includes(' ' + fst)) || li.s === 'skin-tone')))
+  )
+  emojiCount.value = filtered.length
+
   const group: any[] = []
   filtered.forEach((d: any) => {
     const inGroup = group.find(g => g.name === d.g)
@@ -142,6 +150,7 @@ const fontSize = ref(24)
           </button>
         </div>
         <div>
+          <div>{{ emojiCount }} emojis</div>
           <div class="flex">Group: <Toggle v-model="groupBySubGroup" /></div>
           <div class="flex">
             Quality: <label v-for="q in qualityOptions" :key="q"><input v-model="quality" type="checkbox" :value="q">{{ q }}</label>

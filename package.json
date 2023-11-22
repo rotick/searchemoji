@@ -58,6 +58,7 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "@akryum/flexsearch-es": "^0.7.32"
+    "@akryum/flexsearch-es": "^0.7.32",
+    "@vueuse/core": "^10.6.1"
   }
 }
