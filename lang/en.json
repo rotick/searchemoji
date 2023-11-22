@@ -1,3 +1,5 @@
 {
-  "hello": "hello"
+  "hello": "hello",
+  "darkTip": "Switch to dark mode",
+  "lightTip": "Switch to light mode"
 }

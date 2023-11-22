@@ -30,7 +30,6 @@ watch(
       val.forEach((item: any) => {
         flexSearch.add(item)
       })
-      console.log(val)
     }
   },
   {
@@ -136,19 +135,28 @@ const fontSize = ref(24)
 </script>
 
 <template>
+  <div class="flex justify-between items-center h-16 px-6">
+    <div class="flex items-center">
+      <div class="flex items-center w-[256px]">
+        <img src="/logo.png" class="w-12 h-12 mr-3" alt="SearchEmoji">
+        <h1 class="text-2xl font-bold color-title">SearchEmoji</h1>
+      </div>
+      <div class="flex border">
+        <input v-model="keyword" type="search" enterkeyhint="search" @keyup.enter="search">
+        <button @click="search">
+          <i class="icon-[solar--magnifer-linear] text-lg md:text-2xl color-secondary shrink-0" role="img" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+    <ToolBar />
+  </div>
   <div v-if="error" class="text-red-500">{{ error }}</div>
-  <div class="flex">
-    <div class="flex-shrink-0">
+  <div class="flex mx-6">
+    <div class="flex-shrink-0 w-[232px]">
       <div v-for="g in groupData" :key="g.name">{{ g.icon }} {{ g.name }}</div>
     </div>
     <div class="flex-grow ml-6">
       <div>
-        <div class="flex border">
-          <input v-model="keyword" type="search" enterkeyhint="search" @keyup.enter="search">
-          <button @click="search">
-            <i class="icon-[solar--magnifer-linear] text-lg md:text-2xl color-secondary shrink-0" role="img" aria-hidden="true" />
-          </button>
-        </div>
         <div>
           <div>{{ emojiCount }} emojis</div>
           <div class="flex">Group: <Toggle v-model="groupBySubGroup" /></div>
@@ -169,7 +177,7 @@ const fontSize = ref(24)
           </div>
         </div>
       </div>
-      <div v-for="g in groupData" :key="g.name" class="card mb-6">
+      <div v-for="g in groupData" :key="g.name" class="card p-6 mb-6 rounded-2xl">
         <div v-for="sg in g.children" :key="sg.name">
           <h3>{{ sg.name }}</h3>
           <div>

@@ -1,3 +1,5 @@
 {
-  "hello": "你好"
+  "hello": "你好",
+  "darkTip": "Switch to dark mode",
+  "lightTip": "Switch to light mode"
 }
