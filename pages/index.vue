@@ -131,19 +131,35 @@ const groupData = computed(() => {
   })
   return group
 })
-const fontSize = ref(24)
+const emojiSize = ref(24)
 </script>
 
 <template>
-  <div class="flex justify-between items-center h-16 px-6">
+  <div class="flex justify-between items-center h-20 px-6 z-10 sticky top-0 bg-body">
     <div class="flex items-center">
       <div class="flex items-center w-[256px]">
         <img src="/logo.png" class="w-12 h-12 mr-3" alt="SearchEmoji">
         <h1 class="text-2xl font-bold color-title">SearchEmoji</h1>
       </div>
-      <div class="flex border">
-        <input v-model="keyword" type="search" enterkeyhint="search" @keyup.enter="search">
-        <button @click="search">
+      <div class="flex items-center card rounded-full w-[560px] h-10">
+        <div class="flex items-center pl-4 color-action relative border-r border-zinc-200/80 dark:border-zinc-700/80 group cursor-default">
+          <i class="icon-[ph--translate-bold] text-xl mr-1" role="img" aria-hidden="true" />
+          <span>English</span>
+          <i class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl" role="img" aria-hidden="true" />
+          <div class="absolute top-6 left-0 card w-[240px] p-4 rounded-3xl hidden group-hover:flex">
+            <NuxtLink>English</NuxtLink>
+            <NuxtLink>简体中文</NuxtLink>
+          </div>
+        </div>
+        <input
+          v-model="keyword"
+          type="search"
+          enterkeyhint="search"
+          class="bg-transparent flex-grow outline-none px-2"
+          placeholder="Enter a keyword..."
+          @keyup.enter="search"
+        >
+        <button class="bg-zinc-200/80 dark:bg-zinc-700/80 h-full w-12 rounded-r-full flex justify-center items-center" @click="search">
           <i class="icon-[solar--magnifer-linear] text-lg md:text-2xl color-secondary shrink-0" role="img" aria-hidden="true" />
         </button>
       </div>
@@ -158,8 +174,6 @@ const fontSize = ref(24)
     <div class="flex-grow ml-6">
       <div>
         <div>
-          <div>{{ emojiCount }} emojis</div>
-          <div class="flex">Group: <Toggle v-model="groupBySubGroup" /></div>
           <div class="flex">
             Quality: <label v-for="q in qualityOptions" :key="q"><input v-model="quality" type="checkbox" :value="q">{{ q }}</label>
           </div>
@@ -175,13 +189,23 @@ const fontSize = ref(24)
               {{ st.emoji }}
             </div>
           </div>
+          <div class="flex items-center justify-between h-10 text-sm">
+            <div>{{ emojiCount }} emojis</div>
+            <div class="flex items-center">
+              <div class="flex items-center">Group: <Toggle v-model="groupBySubGroup" /></div>
+              <div class="items-center hidden md:flex ml-6">
+                <span class="shrink-0 mr-4">Emoji size: {{ emojiSize }}</span>
+                <input v-model="emojiSize" type="range" min="16" max="48" class="form-range range-sm">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div v-for="g in groupData" :key="g.name" class="card p-6 mb-6 rounded-2xl">
         <div v-for="sg in g.children" :key="sg.name">
           <h3>{{ sg.name }}</h3>
           <div>
-            <NuxtLink v-for="d in sg.data" :key="d.e" :style="{ fontSize: `${fontSize}px` }">
+            <NuxtLink v-for="d in sg.data" :key="d.e" :style="{ fontSize: `${emojiSize}px` }">
               {{ d.e }}
             </NuxtLink>
           </div>
