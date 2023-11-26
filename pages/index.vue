@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Document } from '@akryum/flexsearch-es'
 import { qualityMap } from '~/utils'
-import { watchDebounced } from '@vueuse/core'
+import { useThrottleFn, watchDebounced } from '@vueuse/core'
 
 const flexSearch = new Document({
   document: {
@@ -149,16 +149,30 @@ watchDebounced(
 )
 const route = useRoute()
 const router = useRouter()
-const activeNav = computed(() => {
-  const currentHash = decodeURIComponent(route.hash) || groupData.value[0]?.name || ''
-  return currentHash.replace('#', '')
-})
+const activeNav = ref('')
 function navClick (name: string) {
   if (name.startsWith('Smileys')) {
     router.replace(route.path)
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }
 }
+const doms = ref<HTMLElement[]>([])
+const handleScroll = useThrottleFn(() => {
+  doms.value.forEach(tag => {
+    const top = tag.getBoundingClientRect().top
+    if (top <= 106) {
+      // 10px fault tolerance
+      activeNav.value = decodeURIComponent(tag.id)
+    }
+  })
+}, 20)
+onMounted(() => {
+  activeNav.value = decodeURIComponent(route.hash)?.replace('#', '') || groupData.value[0]?.name || ''
+  window.addEventListener('scroll', handleScroll)
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
@@ -210,7 +224,7 @@ function navClick (name: string) {
         >
           <span class="cursor-default">Status</span>
           <div class="flex items-center">
-            <div class="text-xs">{{ quality.length }} / 4</div>
+            <div class="text-sm">{{ quality.length }} / 4</div>
             <i class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl" role="img" aria-hidden="true" />
           </div>
         </div>
@@ -233,7 +247,7 @@ function navClick (name: string) {
       >
         <span class="text-2xl mr-2">{{ g.icon }}</span>
         <span>{{ g.name }}</span>
-        <Underline v-show="activeNav === g.name" class="absolute left-10 bottom-0 text-xs text-rose-500" />
+        <Underline v-if="activeNav === g.name" class="absolute left-10 bottom-0 text-xs text-rose-500" />
       </NuxtLink>
     </nav>
   </aside>
@@ -266,7 +280,7 @@ function navClick (name: string) {
       {{ error }}
       <button class="border border-rose-500 px-2 rounded-full" onclick="window.location.reload()">Refresh</button>
     </div>
-    <div v-for="g in groupData" :id="g.hash" :key="g.hash" class="card p-4 mb-6 rounded-2xl">
+    <div v-for="g in groupData" :id="g.hash" :key="g.hash" ref="doms" class="card p-4 mb-6 rounded-2xl">
       <div v-for="sg in g.children" :key="sg.name">
         <h3 v-if="groupBySubGroup" class="pl-2 mt-2">{{ sg.name }}</h3>
         <div class="grid flex-wrap gap-1" style="grid-template-columns: repeat(auto-fill, minmax(72px, 1fr))">

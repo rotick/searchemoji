@@ -44,6 +44,7 @@
     "@typescript-eslint/no-floating-promises":"off",
     "@typescript-eslint/prefer-nullish-coalescing":"off",
     "@typescript-eslint/triple-slash-reference":"off",
-    "@typescript-eslint/restrict-template-expressions": "off"
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-misused-promises": "off"
   }
 }
