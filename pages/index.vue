@@ -224,8 +224,8 @@ onUnmounted(() => {
         >
           <span class="cursor-default">Status</span>
           <div class="flex items-center">
-            <div class="text-sm">{{ quality.length }} / 4</div>
-            <i class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl" role="img" aria-hidden="true" />
+            <div class="text-sm color-secondary">{{ quality.length }} / 4</div>
+            <i class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-secondary" role="img" aria-hidden="true" />
           </div>
         </div>
         <ul class="absolute top-10 left-0 card p-4 rounded-b-2xl hidden w-full group-hover:block group-hover:border-t-0">

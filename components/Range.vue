@@ -27,6 +27,17 @@ const value = computed({
 
 const colorMode = useColorMode()
 const progress = computed(() => ((value.value - props.min) / (props.max - props.min)) * 100)
+const bgColor = ref('#d4d4d8')
+watch(
+  () => colorMode.value,
+  () => {
+    bgColor.value = colorMode.value === 'dark' ? '#3f3f46' : '#d4d4d8'
+  }
+)
+// wtf!!! there are so many problems with computed and watch in ssr
+onMounted(() => {
+  bgColor.value = colorMode.value === 'dark' ? '#3f3f46' : '#d4d4d8'
+})
 </script>
 
 <template>
@@ -38,7 +49,7 @@ const progress = computed(() => ((value.value - props.min) / (props.max - props.
     :max="max"
     :style="{
       '--thumb-rotate': `${(value / 48) * 2160}deg`,
-      background: `linear-gradient(to right, #f43f5e ${progress}%, ${colorMode.value === 'dark' ? '#3f3f46' : '#d4d4d8'} ${progress}%)`
+      background: `linear-gradient(to right, #f43f5e ${progress}%, ${bgColor} ${progress}% 100%)`
     }"
   >
 </template>
@@ -51,7 +62,6 @@ const progress = computed(() => ((value.value - props.min) / (props.max - props.
   outline: none;
   border-radius: 10px;
   height: 10px;
-  background: #ccc;
 }
 
 .range::-webkit-slider-thumb {
