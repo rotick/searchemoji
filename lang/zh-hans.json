@@ -1,5 +1,15 @@
 {
-  "hello": "你好",
-  "darkTip": "Switch to dark mode",
-  "lightTip": "Switch to light mode"
+  "placeholder": "输入关键词搜索",
+  "darkTip": "切换到暗黑模式",
+  "lightTip": "切换到日间模式",
+  "backTop": "回顶部",
+  "clickTo": "点击时",
+  "detail": "打开详情",
+  "copy": "复制",
+  "status": "状态",
+  "skinTone": "肤色：",
+  "emojis": "个 Emoji",
+  "group": "分组：",
+  "size": "尺寸：",
+  "refresh": "刷新"
 }

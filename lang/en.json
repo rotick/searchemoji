@@ -1,5 +1,15 @@
 {
-  "hello": "hello",
+  "placeholder": "Enter a keyword",
   "darkTip": "Switch to dark mode",
-  "lightTip": "Switch to light mode"
+  "lightTip": "Switch to light mode",
+  "backTop": "Back to top",
+  "clickTo": "Click to",
+  "detail": "Go to detail",
+  "copy": "Copy",
+  "status": "Status",
+  "skinTone": "Skin tone:",
+  "emojis": "Emojis",
+  "group": "Group:",
+  "size": "Size:",
+  "refresh": "Refresh"
 }
