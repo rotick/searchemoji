@@ -3,6 +3,7 @@ import { Document } from '@akryum/flexsearch-es'
 import { qualityMap } from '~/utils'
 import { useThrottleFn, watchDebounced } from '@vueuse/core'
 
+const { locale, locales } = useI18n()
 const flexSearch = new Document({
   document: {
     id: 'c',
@@ -14,7 +15,7 @@ const flexSearch = new Document({
         resolution: 9
       },
       {
-        field: 'k:en',
+        field: `k:${locale.value}`,
         tokenize: 'forward',
         resolution: 8
       }
@@ -22,7 +23,7 @@ const flexSearch = new Document({
     store: true
   }
 })
-const { data, error } = useFetch('/api/data', { query: { locale: 'en' } })
+const { data, error } = useFetch('/api/emojis', { query: { locale: locale.value } })
 watch(
   data,
   val => {
@@ -54,8 +55,8 @@ watchDebounced(
   { debounce: 400, maxWait: 1000 }
 )
 
-const { locale, locales } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
+const localePath = useLocalePath()
 const currentLocale = computed(() => {
   return locales.value.find((i: any) => i.code === locale.value)
 })
@@ -319,6 +320,7 @@ const clickToOptions = ['detail', 'copy']
           <NuxtLink
             v-for="d in sg.data"
             :key="d.e"
+            :to="localePath(`/${d.c}`)"
             :style="{ fontSize: `${renderEmojiSize}px` }"
             class="tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl"
             :data-tip="d.n"
