@@ -11,5 +11,14 @@
   "emojis": "个 Emoji",
   "group": "分组：",
   "size": "尺寸：",
-  "refresh": "刷新"
+  "refresh": "刷新",
+  "copyBtn": "复制 Emoji",
+  "unicodeName": "Unicode 名称",
+  "searchKeyword": "搜索关键词",
+  "version": "版本",
+  "code": "编码",
+  "inGroup": "分组",
+  "otherPlatform": "其他平台上的展现",
+  "platformImg": "{platform} 平台中的 {name}",
+  "imgCopyTip": "点击右键可复制或下载图片"
 }

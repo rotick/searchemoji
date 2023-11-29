@@ -11,5 +11,14 @@
   "emojis": "Emojis",
   "group": "Group:",
   "size": "Size:",
-  "refresh": "Refresh"
+  "refresh": "Refresh",
+  "copyBtn": "Copy Emoji",
+  "unicodeName": "Unicode name",
+  "searchKeyword": "Search keyword",
+  "version": "Version",
+  "code": "Code",
+  "inGroup": "Group",
+  "otherPlatform": "Display on other platform",
+  "platformImg": "{name} for {platform} platform",
+  "imgCopyTip": "Right click to copy or download the image"
 }
