@@ -12,6 +12,7 @@
   "group": "Group:",
   "size": "Size:",
   "refresh": "Refresh",
+  "noResults": "Keyword: \"{keyword}\" returns no results",
   "copyBtn": "Copy Emoji",
   "unicodeName": "Unicode name",
   "searchKeyword": "Search keyword",

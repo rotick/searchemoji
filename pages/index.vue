@@ -4,6 +4,8 @@ import { qualityMap } from '~/utils'
 import { useThrottleFn, watchDebounced } from '@vueuse/core'
 import Footer from '~/components/Footer.vue'
 
+const route = useRoute()
+const router = useRouter()
 const { locale, locales } = useI18n()
 const flexSearch = new Document({
   document: {
@@ -24,7 +26,10 @@ const flexSearch = new Document({
     store: true
   }
 })
-const { data, error } = useFetch('/api/emojis', { query: { locale: locale.value } })
+const { data, error, pending } = useFetch('/api/emojis', { query: { locale: locale.value } })
+const keyword = ref((route.query.q as string) || '')
+const searchResult = ref<any>([])
+const searching = ref(false)
 watch(
   data,
   val => {
@@ -32,14 +37,17 @@ watch(
       val.forEach((item: any) => {
         flexSearch.add(item)
       })
+      nextTick(() => {
+        if (keyword.value) {
+          search()
+        }
+      })
     }
   },
   {
     immediate: true
   }
 )
-const keyword = ref('')
-const searchResult = ref<any>([])
 function search () {
   const result = flexSearch.search(keyword.value, { limit: 10000, enrich: true })
   searchResult.value = result
@@ -47,14 +55,20 @@ function search () {
       return item.result.map((r: any) => r.doc)
     })
     .flat()
+  searching.value = false
+  router.replace({ path: route.path, query: { q: keyword.value || undefined } })
+}
+function searchInput () {
+  searching.value = true
 }
 watchDebounced(
   keyword,
   () => {
     search()
   },
-  { debounce: 400, maxWait: 1000 }
+  { debounce: 300, maxWait: 1000 }
 )
+const loading = computed(() => searching.value || pending.value)
 
 const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()
@@ -155,12 +169,10 @@ watchDebounced(
   },
   { debounce: 400 }
 )
-const route = useRoute()
-const router = useRouter()
 const activeNav = ref('')
 function navClick (name: string) {
-  if (name.startsWith('Smileys')) {
-    router.replace(route.path)
+  if (name === groupData.value[0]?.name) {
+    router.replace({ path: route.path, query: route.query })
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }
 }
@@ -176,11 +188,16 @@ const handleScroll = useThrottleFn(() => {
     }
   })
 }, 20)
+let stopWatchGroupDataChange: any
 onMounted(() => {
   activeNav.value = decodeURIComponent(route.hash)?.replace('#', '') || groupData.value[0]?.name || ''
+  stopWatchGroupDataChange = watch(groupData, () => {
+    activeNav.value = groupData.value[0]?.name || ''
+  })
   window.addEventListener('scroll', handleScroll)
 })
 onUnmounted(() => {
+  stopWatchGroupDataChange?.()
   window.removeEventListener('scroll', handleScroll)
 })
 function backTop () {
@@ -220,7 +237,6 @@ function modalClick (ev: any) {
   if (ev.composedPath().find((p: any) => p.className?.includes?.('inner'))) return
   closeDetail()
 }
-// todo 空结果，搜索中加载状态
 </script>
 
 <template>
@@ -256,6 +272,7 @@ function modalClick (ev: any) {
           enterkeyhint="search"
           class="bg-transparent flex-grow outline-none px-2 color-title"
           :placeholder="`${$t('placeholder')}...`"
+          @input="searchInput"
           @keyup.enter="search"
         >
         <button class="bg-zinc-200/80 dark:bg-zinc-700/80 h-full w-12 rounded-r-2xl flex justify-center items-center" @click="search">
@@ -304,15 +321,15 @@ function modalClick (ev: any) {
     </div>
     <nav class="px-6">
       <NuxtLink
-        v-for="g in groupData"
+        v-for="(g, i) in groupData"
         :key="g.name"
-        :to="g.hash.startsWith('Smileys') ? '' : `#${g.hash}`"
+        :to="{ path: route.path, query: route.query, hash: i === 0 ? '' : `#${g.hash}` }"
         replace
         class="flex items-center h-10 mt-2 relative cursor-pointer"
         :class="activeNav === g.name ? 'text-rose-500 font-bold' : 'hover:color-action'"
         @click="navClick(g.name)"
       >
-        <span class="text-2xl mr-2">{{ g.icon }}</span>
+        <span class="text-2xl mr-2 w-8 inline-block text-center">{{ g.icon }}</span>
         <span>{{ g.name }}</span>
         <Underline v-if="activeNav === g.name" class="absolute left-10 bottom-0 text-xs text-rose-500" />
       </NuxtLink>
@@ -343,27 +360,33 @@ function modalClick (ev: any) {
         </div>
       </div>
     </div>
-    <div v-if="error" class="text-rose-500 card p-6 mb-6 rounded-2xl">
+    <div v-if="!loading && error" class="text-rose-500 card p-6 mb-6 rounded-2xl">
       {{ error }}
       <button class="border border-rose-500 px-2 rounded-full" onclick="window.location.reload()">{{ $t('refresh') }}</button>
     </div>
-    <div v-for="g in groupData" :id="g.hash" :key="g.hash" ref="doms" class="card p-4 mb-6 rounded-2xl">
-      <div v-for="sg in g.children" :key="sg.name">
-        <h3 v-if="groupBySubGroup" class="pl-2 mb-2 mt-4">{{ sg.name }}</h3>
-        <div class="grid flex-wrap gap-1" style="grid-template-columns: repeat(auto-fill, minmax(72px, 1fr))">
-          <NuxtLink
-            v-for="d in sg.data"
-            :key="d.e"
-            :to="localePath(`/${d.c}`)"
-            :style="{ fontSize: `${renderEmojiSize}px` }"
-            class="tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl"
-            :data-tip="d.n"
-          >
-            {{ d.e }}
-          </NuxtLink>
+    <div v-if="loading" class="flex justify-center items-center h-24">
+      <i class="icon-[svg-spinners--ring-resize] text-lg" role="img" aria-hidden="true" />
+    </div>
+    <div v-if="!loading && !error && !groupData.length" class="card p-6 rounded-2xl">⚠️ {{ $t('noResults', { keyword: keyword }) }}</div>
+    <template v-if="!loading">
+      <div v-for="g in groupData" :id="g.hash" :key="g.hash" ref="doms" class="card p-4 mb-6 rounded-2xl">
+        <div v-for="sg in g.children" :key="sg.name">
+          <h3 v-if="groupBySubGroup" class="pl-2 mb-2 mt-4">{{ sg.name }}</h3>
+          <div class="grid flex-wrap gap-1" style="grid-template-columns: repeat(auto-fill, minmax(72px, 1fr))">
+            <NuxtLink
+              v-for="d in sg.data"
+              :key="d.e"
+              :to="localePath(`/${d.c}`)"
+              :style="{ fontSize: `${renderEmojiSize}px` }"
+              class="tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl"
+              :data-tip="d.n"
+            >
+              {{ d.e }}
+            </NuxtLink>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
   </main>
   <Footer />
   <div

@@ -12,6 +12,7 @@
   "group": "分组：",
   "size": "尺寸：",
   "refresh": "刷新",
+  "noResults": "关键词：“{keyword}” 搜索不到任何结果",
   "copyBtn": "复制 Emoji",
   "unicodeName": "Unicode 名称",
   "searchKeyword": "搜索关键词",
