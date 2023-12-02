@@ -11,6 +11,5 @@ export default defineEventHandler(ev => {
     })
   }
   emoji.keywords = emoji.k?.[locale]
-  console.log(emoji)
   return emoji
 })

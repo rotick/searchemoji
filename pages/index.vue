@@ -2,6 +2,7 @@
 import { Document } from '@akryum/flexsearch-es'
 import { qualityMap } from '~/utils'
 import { useThrottleFn, watchDebounced } from '@vueuse/core'
+import Footer from '~/components/Footer.vue'
 
 const { locale, locales } = useI18n()
 const flexSearch = new Document({
@@ -187,6 +188,38 @@ function backTop () {
 }
 const clickTo = ref('detail')
 const clickToOptions = ['detail', 'copy']
+
+const showDetail = ref(false)
+const emoji = ref()
+onBeforeRouteLeave(to => {
+  if ((to.name as string).startsWith('id__')) {
+    const emojiId = to.params.id as string
+    emoji.value = data.value.find((d: any) => d.c === emojiId)
+    showDetail.value = true
+    window.history.pushState('detailPage', '', to.path)
+    return false
+  } else {
+    return true
+  }
+})
+onMounted(() => {
+  window.addEventListener('popstate', event => {
+    if (event.state !== 'detailPage') {
+      emoji.value = null
+      showDetail.value = false
+    }
+  })
+})
+function closeDetail () {
+  showDetail.value = false
+  setTimeout(() => {
+    router.back()
+  }, 50)
+}
+function modalClick (ev: any) {
+  if (ev.composedPath().find((p: any) => p.className?.includes?.('inner'))) return
+  closeDetail()
+}
 // todo 空结果，搜索中加载状态
 </script>
 
@@ -198,6 +231,7 @@ const clickToOptions = ['detail', 'copy']
       <NuxtLink class="flex items-center w-[256px]" to="/" title="SearchEmoji">
         <img src="/logo.png" class="w-11 h-11 mr-3" alt="SearchEmoji">
         <Logo class="text-2xl color-title mt-0.5" />
+        <h1 class="w-0 overflow-hidden">Search for Emoji, Click to Copy</h1>
       </NuxtLink>
       <div class="flex items-center card rounded-2xl w-[560px] h-10">
         <div class="flex items-center pl-4 relative border-r border-zinc-200/80 dark:border-zinc-700/80 group cursor-default">
@@ -331,10 +365,7 @@ const clickToOptions = ['detail', 'copy']
       </div>
     </div>
   </main>
-  <footer class="py-10 color-secondary text-center text-sm">
-    <p class="flex items-center justify-center">Copyright © {{ new Date().getFullYear() }} SearchEmoji</p>
-    <p class="mt-4">Emojis data comes from <a href="https://unicode.org/" target="_blank">Unicode</a></p>
-  </footer>
+  <Footer />
   <div
     v-show="y > 400"
     class="cursor-pointer fixed right-4 bottom-4 card w-12 h-12 rounded-2xl flex justify-center items-center shadow-2xl tooltip"
@@ -343,6 +374,22 @@ const clickToOptions = ['detail', 'copy']
   >
     <i class="icon-[material-symbols--rocket] text-rose-500 text-2xl" role="img" aria-hidden="true" />
   </div>
+  <transition name="nested" :duration="150">
+    <div v-if="showDetail" class="fixed z-10 top-0 left-0 w-full h-full bg-black/50 dark:bg-black/80 backdrop-blur-sm flex" @click="modalClick">
+      <div ref="iconOverlay" class="inner bg-body h-[90vh] w-[100vw] md:w-[760px] rounded-t-3xl shadow-2xl absolute bottom-0 left-0 md:left-1/2 -ml-[380px]">
+        <a
+          href="javascript:;"
+          class="absolute z-10 card top-6 right-6 w-8 h-8 rounded-xl text-2xl flex justify-center items-center hover:bg-rose-500 hover:border-rose-500 hover:text-white"
+          @click="closeDetail"
+        >
+          <i class="icon-[material-symbols--close]" role="img" aria-hidden="true" />
+        </a>
+        <div class="h-full overflow-y-auto overscroll-contain">
+          <Detail :emoji="emoji" />
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <style scoped></style>

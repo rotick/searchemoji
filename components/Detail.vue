@@ -1,8 +1,38 @@
 <script setup lang="ts">
+import { useClipboard } from '@vueuse/core'
+const props = defineProps({
+  emoji: {
+    type: [Object],
+    default: null
+  }
+})
 const route = useRoute()
 const { locale } = useI18n()
 const id = route.params.id
-const { data, error } = useFetch(`/api/emoji/${id}`, { query: { locale: locale.value } })
+const { data, error, execute } = useFetch(`/api/emoji/${id}`, { query: { locale: locale.value }, immediate: process.server })
+if (props.emoji) {
+  data.value = props.emoji
+} else {
+  execute()
+}
+const source = computed(() => data.value.e)
+const { copy, copied } = useClipboard({ source })
+function handleCopy (e: KeyboardEvent) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
+    const selection = document.getSelection()
+    if (!selection?.toString()) {
+      copy(source.value)
+    }
+  }
+}
+let isMac = false
+onMounted(() => {
+  document.addEventListener('keydown', handleCopy)
+  isMac = window.navigator.userAgent.toLowerCase().includes('macintosh')
+})
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleCopy)
+})
 const platform = [
   {
     name: 'Apple',
@@ -45,42 +75,46 @@ const platform = [
       {{ error }}
       <button class="border border-rose-500 px-2 rounded-full" onclick="window.location.reload()">{{ $t('refresh') }}</button>
     </div>
-    <div v-if="data">
+    <main v-if="data">
       <div class="flex justify-center items-center mx-auto">
-        <span class="text-[128px]">{{ data.e }}</span>
+        <h2 class="text-[128px]">{{ data.e }}</h2>
       </div>
       <div>
-        <h2 class="font-bold text-2xl color-title text-center">{{ data.n }}</h2>
-        <button class="px-6 h-12 rounded-2xl bg-rose-500 text-white flex items-center mx-auto my-6">
+        <h3 class="font-bold text-2xl color-title text-center">{{ data.n }}</h3>
+        <button
+          class="px-6 h-12 rounded-2xl bg-rose-500 text-white flex items-center mx-auto my-6 md:tooltip"
+          :data-tip="`${isMac ? '⌘' : 'Ctrl'} + C`"
+          @click="copy(source)"
+        >
           <i
             class="text-xl mr-2"
-            :class="false ? 'icon-[material-symbols--check-circle] text-success' : 'icon-[material-symbols--content-copy-outline]'"
+            :class="copied ? 'icon-[material-symbols--check-circle] text-success' : 'icon-[material-symbols--content-copy-outline]'"
             aria-hidden="true"
             role="img"
           />
           {{ $t('copyBtn') }}
         </button>
         <div class="flex justify-between border-t border-b border-main py-2">
-          <span class="shrink-0 mr-4">{{ $t('unicodeName') }}</span>{{ data.n }}
+          <span class="shrink-0 mr-4">{{ $t('unicodeName') }}</span> <span>{{ data.n }}</span>
         </div>
         <div class="flex justify-between border-b border-main py-2">
           <span class="shrink-0 mr-4 my-0.5">{{ $t('searchKeyword') }}</span>
           <div class="flex items-center flex-wrap justify-end">
-            <span v-for="k in data.keywords" :key="k" class="bg-rose-100 text-rose-700 border border-rose-300 rounded-xl px-2 ml-1 my-0.5">{{ k }}</span>
+            <span v-for="k in data.keywords" :key="k" class="card color-action rounded-xl px-2 ml-1 my-0.5">{{ k }}</span>
           </div>
         </div>
         <div class="flex justify-between border-b border-main py-2">
-          <span class="shrink-0 mr-4">{{ $t('version') }}</span>{{ data.v }}
+          <span class="shrink-0 mr-4">{{ $t('version') }}</span> <span>{{ data.v }}</span>
         </div>
         <div class="flex justify-between border-b border-main py-2">
-          <span class="shrink-0 mr-4">{{ $t('code') }}</span> U+{{ data.c.replace(/ /g, ' U+') }}
+          <span class="shrink-0 mr-4">{{ $t('code') }}</span> <span>U+{{ data.c.replace(/ /g, ' U+') }}</span>
         </div>
         <div class="flex justify-between border-b border-main py-2">
           <span class="shrink-0 mr-4">{{ $t('inGroup') }}</span> <span class="text-right">{{ data.g }} > {{ data.s }}</span>
         </div>
       </div>
       <div class="mt-6">
-        <h3 class="font-bold color-action">{{ $t('otherPlatform') }}</h3>
+        <h4 class="font-bold color-action">{{ $t('otherPlatform') }}</h4>
         <div
           class="mt-6 flex justify-between md:block bg-white/90 dark:bg-zinc-800/90 border border-zinc-200/80 dark:border-zinc-700/80 p-4 md:p-0 md:bg-transparent md:dark:bg-transparent md:border-none rounded-2xl"
         >
@@ -96,7 +130,7 @@ const platform = [
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 

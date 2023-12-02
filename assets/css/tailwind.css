@@ -76,26 +76,18 @@ a[target=_blank]:not(.no-icon):after{
 }
 .nested-enter-active,
 .nested-leave-active {
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
-.nested-leave-active {
-  /*transition-delay: 0.2s;*/
-}
-
 .nested-enter-from,
 .nested-leave-to {
   opacity: 0;
 }
 .nested-enter-active .inner,
 .nested-leave-active .inner {
-  transition: all 0.2s ease;
+  transition: transform 0.15s ease;
 }
-.nested-enter-active .inner {
-  transition-delay: 0.1s;
-}
-
 .nested-enter-from .inner,
 .nested-leave-to .inner {
-  transform: translateY(48px);
+  transform: translateY(100%);
   opacity: 0;
 }
