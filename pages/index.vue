@@ -188,17 +188,30 @@ const handleScroll = useThrottleFn(() => {
     }
   })
 }, 20)
+const searchInputRef = ref<HTMLElement>()
+function handleKeydown (e: KeyboardEvent) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault()
+    searchInputRef.value?.focus()
+    // @ts-expect-error-next-line
+    searchInputRef.value?.select()
+  }
+}
+let isMac = false
 let stopWatchGroupDataChange: any
 onMounted(() => {
   activeNav.value = decodeURIComponent(route.hash)?.replace('#', '') || groupData.value[0]?.name || ''
   stopWatchGroupDataChange = watch(groupData, () => {
     activeNav.value = groupData.value[0]?.name || ''
   })
+  isMac = window.navigator.userAgent.toLowerCase().includes('macintosh')
   window.addEventListener('scroll', handleScroll)
+  document.addEventListener('keydown', handleKeydown)
 })
 onUnmounted(() => {
   stopWatchGroupDataChange?.()
   window.removeEventListener('scroll', handleScroll)
+  document.removeEventListener('keydown', handleKeydown)
 })
 function backTop () {
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -273,11 +286,12 @@ function modalClick (ev: any) {
           </div>
         </div>
         <input
+          ref="searchInputRef"
           v-model="keyword"
           type="search"
           enterkeyhint="search"
           class="bg-transparent flex-grow outline-none px-2 color-title"
-          :placeholder="`${$t('placeholder')}...`"
+          :placeholder="`${$t('placeholder')} ${isMac ? '⌘' : 'Ctrl'} + K`"
           @input="searchInput"
           @keyup.enter="search"
         >
