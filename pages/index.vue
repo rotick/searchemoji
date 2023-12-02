@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Document } from '@akryum/flexsearch-es'
 import { qualityMap } from '~/utils'
-import { useThrottleFn, watchDebounced } from '@vueuse/core'
+import { useThrottleFn, watchDebounced, useStorageAsync, useClipboard } from '@vueuse/core'
 import Footer from '~/components/Footer.vue'
 
 const route = useRoute()
@@ -76,9 +76,9 @@ const currentLocale = computed(() => {
   return locales.value.find((i: any) => i.code === locale.value)
 })
 
-const groupBySubGroup = ref(false)
+const groupBySubGroup = useStorageAsync('groupBySubGroup', false)
 const qualityOptions = Object.keys(qualityMap)
-const quality = ref(['fully-qualified'])
+const quality = useStorageAsync('quality', ['fully-qualified'])
 const transformQuality = computed(() => {
   return quality.value.map(q => qualityMap[q])
 })
@@ -104,7 +104,7 @@ const skinToneOptions = [
     emoji: '🏿'
   }
 ]
-const skinTone = ref<string[]>([])
+const skinTone = useStorageAsync<string[]>('skinTone', [])
 const fullSkinTone = computed(() => skinTone.value.map(st => `${st} skin tone`))
 function toggleSkinTone (name: string) {
   const index = skinTone.value.findIndex(n => n === name)
@@ -160,7 +160,7 @@ const groupData = computed(() => {
   })
   return group
 })
-const emojiSize = ref(24)
+const emojiSize = useStorageAsync('emojiSize', 24)
 const renderEmojiSize = ref(24)
 watchDebounced(
   emojiSize,
@@ -203,8 +203,14 @@ onUnmounted(() => {
 function backTop () {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
-const clickTo = ref('detail')
+const clickTo = useStorageAsync('clickTo', 'detail')
 const clickToOptions = ['detail', 'copy']
+const source = ref('')
+const { copy, copied } = useClipboard({ source })
+function copyEmoji (emoji: string) {
+  source.value = emoji
+  copy(source.value)
+}
 
 const showDetail = ref(false)
 const emoji = ref()
@@ -343,8 +349,9 @@ function modalClick (ev: any) {
           <div
             v-for="st in skinToneOptions"
             :key="st.name"
-            class="border border-1 cursor-default flex justify-center items-center mr-1 w-5 h-5"
+            class="border border-1 cursor-default flex justify-center items-center mr-1 w-5 h-5 tooltip"
             :class="skinTone.includes(st.name) ? 'border-rose-500' : 'border-transparent'"
+            :data-tip="st.name"
             @click="toggleSkinTone(st.name)"
           >
             {{ st.emoji }}
@@ -373,16 +380,34 @@ function modalClick (ev: any) {
         <div v-for="sg in g.children" :key="sg.name">
           <h3 v-if="groupBySubGroup" class="pl-2 mb-2 mt-4">{{ sg.name }}</h3>
           <div class="grid flex-wrap gap-1" style="grid-template-columns: repeat(auto-fill, minmax(72px, 1fr))">
-            <NuxtLink
-              v-for="d in sg.data"
-              :key="d.e"
-              :to="localePath(`/${d.c}`)"
-              :style="{ fontSize: `${renderEmojiSize}px` }"
-              class="tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl"
-              :data-tip="d.n"
-            >
-              {{ d.e }}
-            </NuxtLink>
+            <template v-if="clickTo === 'detail'">
+              <NuxtLink
+                v-for="d in sg.data"
+                :key="d.e"
+                :to="localePath(`/${d.c}`)"
+                :style="{ fontSize: `${renderEmojiSize}px` }"
+                class="tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl"
+                :data-tip="d.n"
+              >
+                {{ d.e }}
+              </NuxtLink>
+            </template>
+            <template v-if="clickTo === 'copy'">
+              <a
+                v-for="d in sg.data"
+                :key="d.e"
+                href="javascript:;"
+                :style="{ fontSize: `${renderEmojiSize}px` }"
+                class="tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl relative"
+                :data-tip="$t('clickToCopy') + d.n"
+                @click="copyEmoji(d.e)"
+              >
+                {{ d.e }}
+                <div v-if="source === d.e && copied" class="absolute left-0 top-0 w-full h-full rounded-2xl bg-black/50 flex justify-center items-center">
+                  <i class="icon-[material-symbols--check-circle] text-xl text-green-500" aria-hidden="true" role="img" />
+                </div>
+              </a>
+            </template>
           </div>
         </div>
       </div>
