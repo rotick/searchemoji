@@ -218,6 +218,10 @@ function backTop () {
 }
 const clickTo = useStorageAsync('clickTo', 'detail')
 const clickToOptions = ['detail', 'copy']
+function setClickTo (opt: any, close: any) {
+  clickTo.value = opt
+  close()
+}
 const source = ref('')
 const { copy, copied } = useClipboard({ source })
 function copyEmoji (emoji: string) {
@@ -328,10 +332,7 @@ function modalClick (ev: any) {
                 :key="opt"
                 class="py-2 whitespace-nowrap cursor-pointer"
                 :class="clickTo === opt ? 'color-secondary' : 'hover:text-rose-500'"
-                @click="
-                  close()
-                  clickTo = opt
-                "
+                @click="setClickTo(opt, close)"
               >
                 {{ $t(opt) }}
               </li>
