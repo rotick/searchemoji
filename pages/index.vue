@@ -266,32 +266,42 @@ function modalClick (ev: any) {
       <NuxtLink class="flex items-center w-[256px]" to="/" title="SearchEmoji">
         <img src="/logo.png" class="w-11 h-11 mr-3" alt="SearchEmoji">
         <Logo class="text-2xl color-title mt-0.5" />
-        <h1 class="w-0 overflow-hidden">Search for Emoji, Click to Copy</h1>
+        <h1 class="w-0 h-0 overflow-hidden">Search for Emoji, Click to Copy</h1>
       </NuxtLink>
       <div class="flex items-center card rounded-2xl w-[560px] h-10">
-        <div class="flex items-center pl-4 relative border-r border-zinc-200/80 dark:border-zinc-700/80 group cursor-default">
-          <i class="icon-[ph--translate-bold] text-xl mr-1 color-action" role="img" aria-hidden="true" />
-          <span class="color-action">{{ currentLocale?.name }}</span>
-          <i class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-action" role="img" aria-hidden="true" />
-          <div class="absolute top-6 left-0 card w-[220px] p-2 rounded-2xl hidden group-hover:flex flex-wrap">
-            <NuxtLink
-              v-for="l in locales"
-              :key="l.code"
-              :to="switchLocalePath(l.code)"
-              class="flex items-center h-8 px-2 rounded-xl w-[101px]"
-              :class="l.code === locale ? 'color-disable cursor-default' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700 hover:color-action'"
-            >
-              {{ l.name }}
-            </NuxtLink>
-          </div>
-        </div>
+        <DropDown class="flex items-center pl-4 relative border-r border-zinc-200/80 dark:border-zinc-700/80 cursor-default" :top="30" :left="0">
+          <template #default="{ active }">
+            <i class="icon-[ph--translate-bold] text-xl mr-1 color-action" role="img" aria-hidden="true" />
+            <span class="color-action">{{ currentLocale?.name }}</span>
+            <i
+              class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-action transition-all"
+              role="img"
+              :class="{ 'rotate-180': active }"
+              aria-hidden="true"
+            />
+          </template>
+          <template #content="{ close }">
+            <div class="card w-[220px] p-2 rounded-2xl flex flex-wrap">
+              <NuxtLink
+                v-for="l in locales"
+                :key="l.code"
+                :to="switchLocalePath(l.code)"
+                class="flex items-center h-8 px-2 rounded-xl w-[101px]"
+                :class="l.code === locale ? 'color-disable cursor-default' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700 hover:color-action'"
+                @click="close()"
+              >
+                {{ l.name }}
+              </NuxtLink>
+            </div>
+          </template>
+        </DropDown>
         <input
           ref="searchInputRef"
           v-model="keyword"
           type="search"
           enterkeyhint="search"
           class="bg-transparent flex-grow outline-none px-2 color-title"
-          :placeholder="`${$t('placeholder')} ${isMac ? '⌘' : 'Ctrl'} + K`"
+          :placeholder="`${$t('placeholder')} (${isMac ? '⌘' : 'Ctrl'} + K)`"
           @input="searchInput"
           @keyup.enter="search"
         >
@@ -301,43 +311,65 @@ function modalClick (ev: any) {
       </div>
       <div class="flex items-center ml-6">
         {{ $t('clickTo') }}
-        <div class="flex items-center ml-2 color-action group relative cursor-default">
-          {{ $t(clickTo) }}
-          <i class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl" role="img" aria-hidden="true" />
-          <ul class="absolute top-6 left-0 card px-4 py-2 rounded-2xl hidden group-hover:block">
-            <li
-              v-for="opt in clickToOptions"
-              :key="opt"
-              class="py-2 whitespace-nowrap cursor-pointer"
-              :class="clickTo === opt ? 'color-secondary' : 'hover:text-rose-500'"
-              @click="clickTo = opt"
-            >
-              {{ $t(opt) }}
-            </li>
-          </ul>
-        </div>
+        <DropDown class="flex items-center ml-2 color-action relative cursor-default">
+          <template #default="{ active }">
+            {{ $t(clickTo) }}
+            <i
+              class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl transition-all"
+              :class="{ 'rotate-180': active }"
+              role="img"
+              aria-hidden="true"
+            />
+          </template>
+          <template #content="{ close }">
+            <ul class="card px-4 py-2 rounded-2xl">
+              <li
+                v-for="opt in clickToOptions"
+                :key="opt"
+                class="py-2 whitespace-nowrap cursor-pointer"
+                :class="clickTo === opt ? 'color-secondary' : 'hover:text-rose-500'"
+                @click="
+                  close()
+                  clickTo = opt
+                "
+              >
+                {{ $t(opt) }}
+              </li>
+            </ul>
+          </template>
+        </DropDown>
       </div>
     </div>
     <ToolBar />
   </header>
   <aside class="flex-shrink-0 w-[280px] top-20 left-0 bottom-0 fixed overflow-y-auto">
     <div class="h-[72px] flex items-center px-6">
-      <div class="relative group w-full z-10">
-        <div
-          class="flex items-center justify-between h-10 card pl-4 pr-2 rounded-t-2xl rounded-b-2xl group-hover:rounded-b-none group-hover:border-b-transparent"
-        >
-          <span class="cursor-default">{{ $t('status') }}</span>
-          <div class="flex items-center">
-            <div class="text-sm color-secondary">{{ quality.length }} / 4</div>
-            <i class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-secondary" role="img" aria-hidden="true" />
+      <DropDown class="w-full z-10" :top="39" :left="0" :right="0">
+        <template #default="{ active }">
+          <div
+            class="flex items-center justify-between h-10 card pl-4 pr-2 rounded-t-2xl cursor-default"
+            :class="active ? 'rounded-b-none border-b-transparent' : 'rounded-b-2xl'"
+          >
+            <span>{{ $t('status') }}</span>
+            <div class="flex items-center">
+              <div class="text-sm color-secondary">{{ quality.length }} / 4</div>
+              <i
+                class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-secondary transition-all"
+                :class="{ 'rotate-180': active }"
+                role="img"
+                aria-hidden="true"
+              />
+            </div>
           </div>
-        </div>
-        <ul class="absolute top-10 left-0 card p-4 rounded-b-2xl hidden w-full group-hover:block group-hover:border-t-0">
-          <li v-for="q in qualityOptions" :key="q" class="h-7 whitespace-nowrap">
-            <label class="flex items-center color-action"><input v-model="quality" type="checkbox" :value="q" class="mr-2"> {{ q }}</label>
-          </li>
-        </ul>
-      </div>
+        </template>
+        <template #content>
+          <ul class="card p-4 rounded-b-2xl w-full border-t-0">
+            <li v-for="q in qualityOptions" :key="q" class="h-7 whitespace-nowrap">
+              <label class="flex items-center color-action"><input v-model="quality" type="checkbox" :value="q" class="mr-2"> {{ q }}</label>
+            </li>
+          </ul>
+        </template>
+      </DropDown>
     </div>
     <nav class="px-6">
       <NuxtLink

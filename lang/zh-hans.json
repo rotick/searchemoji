@@ -1,4 +1,8 @@
 {
+  "seo": {
+    "title": "SearchEmoji - 最强 Emoji 搜索引擎。一词搜索，一键复制！",
+    "description": "丰富多彩的 Emoji 助你内容更生动。SearchEmoji 收录最全的 Emoji 表情库，并提供强大的搜索功能，你可以通过关键词精确查找，或者通过分类筛选、预览，并一键复制到你的文章、聊天及社交媒体中。"
+  },
   "placeholder": "输入关键词搜索",
   "darkTip": "切换到暗黑模式",
   "lightTip": "切换到日间模式",
