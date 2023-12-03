@@ -1,3 +1,4 @@
+import locale from './locale'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -29,47 +30,6 @@ export default defineNuxtConfig({
       cookieKey: 'lang',
       cookieCrossOrigin: true
     },
-    locales: [
-      {
-        code: 'en',
-        iso: 'en',
-        name: 'English'
-      },
-      {
-        code: 'zh-hans',
-        iso: 'zh-CN',
-        name: '简体中文'
-      },
-      {
-        code: 'es',
-        iso: 'es',
-        name: 'Español'
-      },
-      {
-        code: 'zh-hant',
-        iso: 'zh-TW',
-        name: '正體中文'
-      },
-      {
-        code: 'de',
-        iso: 'de',
-        name: 'Deutsch'
-      },
-      {
-        code: 'ja',
-        iso: 'ja',
-        name: '日本語'
-      },
-      {
-        code: 'fr',
-        iso: 'fr',
-        name: 'Français'
-      },
-      {
-        code: 'pt',
-        iso: 'pt',
-        name: 'Português'
-      }
-    ]
+    locales: locale
   }
 })

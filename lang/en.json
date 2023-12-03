@@ -1,7 +1,8 @@
 {
   "seo": {
     "title": "Search for Emoji, Click to Copy",
-    "description": "Let Emojis Bring Your Content To Life. SearchEmoji houses the largest collection of emojis from around the world. Find exactly the emoji you need through powerful search functions—either search by keyword or browse through categories. Preview any emoji and copy it with one click into your documents, messages, and social posts."
+    "description": "Let Emojis Bring Your Content To Life. SearchEmoji houses the largest collection of emojis from around the world. Find exactly the emoji you need through powerful search functions—either search by keyword or browse through categories. Preview any emoji and copy it with one click into your documents, messages, and social posts.",
+    "detailTitle": "{emoji} {name} Emoji detail - SearchEmoji"
   },
   "placeholder": "Enter a keyword",
   "darkTip": "Switch to dark mode",

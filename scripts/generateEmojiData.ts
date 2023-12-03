@@ -17,14 +17,14 @@ function parseTextToJson (text: string) {
     } else if (!line.startsWith('#') && line) {
       const regex = /(.+) ; (.+) # (.+) E(\d+\.\d+) (.+)/
       const match = line.match(regex)
-      const code = match?.[1].trim()
+      const code = match?.[1].trim() || ''
       const quality = match?.[2].trim() || ''
       const emoji = match?.[3]
       const version = match?.[4]
       const name = match?.[5]
 
       json.push({
-        c: code,
+        c: code.replace(/ /g, '-'),
         q: qualityMap[quality],
         e: emoji,
         v: version,

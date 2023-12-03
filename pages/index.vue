@@ -50,6 +50,7 @@ watch(
 )
 function search () {
   const result = flexSearch.search(keyword.value, { limit: 10000, enrich: true })
+  // todo add skin tone
   searchResult.value = result
     .map((item: any) => {
       return item.result.map((r: any) => r.doc)
@@ -285,12 +286,12 @@ function modalClick (ev: any) {
             />
           </template>
           <template #content="{ close }">
-            <div class="card w-[220px] p-2 rounded-2xl flex flex-wrap">
+            <div class="card w-[264px] p-2 rounded-2xl flex flex-wrap">
               <NuxtLink
                 v-for="l in locales"
                 :key="l.code"
                 :to="switchLocalePath(l.code)"
-                class="flex items-center h-8 px-2 rounded-xl w-[101px]"
+                class="flex items-center h-8 px-2 rounded-xl w-[122px] line-clamp-1 whitespace-nowrap"
                 :class="l.code === locale ? 'color-disable cursor-default' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700 hover:color-action'"
                 @click="close()"
               >
