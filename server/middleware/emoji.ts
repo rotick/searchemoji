@@ -22,9 +22,35 @@ async function loadEmojiData () {
   })
   return loadEmojisPromise
 }
+let groups: any[] = []
+let loadGroupsPromise: Promise<any> | null = null
+async function loadGroupsData () {
+  if (groups.length) {
+    return Promise.resolve(groups)
+  }
+  if (loadGroupsPromise) {
+    return loadGroupsPromise
+  }
+  // eslint-disable-next-line
+  loadGroupsPromise = new Promise(async (resolve, reject) => {
+    try {
+      const groupDataStr = await fs.readFile('./data/group-translate.json', { encoding: 'utf-8' })
+      groups = JSON.parse(groupDataStr)
+      resolve(groups)
+    } catch (err) {
+      reject(err)
+    }
+    loadGroupsPromise = null
+  })
+  return loadGroupsPromise
+}
 export default defineEventHandler(async event => {
   await loadEmojiData().catch(err => {
     console.log(err)
   })
+  await loadGroupsData().catch(err => {
+    console.log(err)
+  })
   event.context.emojis = emojis
+  event.context.groups = groups
 })

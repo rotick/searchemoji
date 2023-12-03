@@ -55,3 +55,40 @@ Now, please provide the batch of Emoji and the target languages for generating k
 Target languages: ${JSON.stringify(langs)}
 Emoji: ${JSON.stringify(emojis)}
 `
+
+export const groupNamePrompt = (
+  langs: string[],
+  names: string[]
+) => `I am building a multilingual Emoji search engine. Unicode has grouped emojis and assigned names to each group. Now, I need to translate these group names into various languages. I will provide you with the group names in the form of an array, like:
+["Smileys & Emotion","face-smiling"]
+and inform you of the languages for translation, providing their ISO639-1 codes in an array format, such as:
+["en","zh","es",…]
+Please paraphrase these group names into the specified languages and return them to me in JSON format, like:
+\`\`\`
+[
+  {
+    name: "Smileys & Emotion",
+    en: "Smileys emotion",
+    zh: "表情与情感"
+    …
+  },
+  {
+    name: "face-smiling",
+    en: "Face smiling",
+    zh: "笑脸"
+    …
+  }
+]
+\`\`\`
+As you can see, the returned format is an array of objects. Each object's "name" corresponds to the given group name, and other keys represent ISO639-1 codes for various languages. The values are the translated results in each language.
+
+When translating, please consider the following:
+1. Do not translate literally; use paraphrasing to match the native speakers' wording habits and maintain consistency with the original English names' meanings.
+2. Unicode's names for subgroups include "-", and you need to paraphrase these names into their corresponding English names, placing them in the "en" key of the object. This is why I also need you to provide the original "en" key in the return. Note that you only need to handle "-", and other symbols such as "&" do not need translation.
+3. For languages with a capitalization convention for the first letter, the initial letter of the results you return should be capitalized.
+
+Now, please translate the following group names into the specified languages:
+
+Group names: ${JSON.stringify(names)}
+Target languages: ${JSON.stringify(langs)}
+`

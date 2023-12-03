@@ -13,9 +13,24 @@ const flexSearch = new Document({
     tag: 'g',
     index: [
       {
+        field: 'e',
+        tokenize: 'forward',
+        resolution: 9
+      },
+      {
         field: 'n',
         tokenize: 'forward',
         resolution: 9
+      },
+      {
+        field: 't',
+        tokenize: 'forward',
+        resolution: 9
+      },
+      {
+        field: 'k:en',
+        tokenize: 'forward',
+        resolution: 8
       },
       {
         field: `k:${locale.value}`,
@@ -26,15 +41,19 @@ const flexSearch = new Document({
     store: true
   }
 })
-const { data, error, pending } = useFetch('/api/emojis', { query: { locale: locale.value } })
+interface IndexData {
+  emojis: any[]
+  groups: any[]
+}
+const { data, error, pending } = useFetch<IndexData>('/api/emojis', { query: { locale: locale.value } })
 const keyword = ref((route.query.q as string) || '')
 const searchResult = ref<any>([])
 const searching = ref(false)
 watch(
   data,
   val => {
-    if (val?.length) {
-      val.forEach((item: any) => {
+    if (val?.emojis.length) {
+      val.emojis.forEach((item: any) => {
         flexSearch.add(item)
       })
       nextTick(() => {
@@ -120,42 +139,54 @@ const emojiCount = ref(0)
 // const groupData = ref<any[]>([])
 const groupData = computed(() => {
   // watch([searchResult, data, transformQuality, fullSkinTone, groupBySubGroup], () => {
-  const list = keyword.value ? searchResult.value : data.value || []
+  const list = keyword.value ? searchResult.value : data.value?.emojis || []
+  const skinToneSubGroupIndex = data.value?.groups.findIndex(gn => gn.n === 'skin-tone')
   const filtered = list.filter(
     (li: any) =>
       transformQuality.value.includes(li.q) &&
-      (!li.n.includes('skin tone') || (li.n.includes('skin tone') && (fullSkinTone.value.find(fst => li.n.includes(' ' + fst)) || li.s === 'skin-tone')))
+      (!li.n.includes('skin tone') ||
+        (li.n.includes('skin tone') && (fullSkinTone.value.find(fst => li.n.includes(' ' + fst)) || li.s === skinToneSubGroupIndex)))
   )
   emojiCount.value = filtered.length
 
   const group: any[] = []
   filtered.forEach((d: any) => {
-    const inGroup = group.find(g => g.name === d.g)
+    const groupName = data.value?.groups[d.g]
+    const subGroupName = data.value?.groups[d.s]
+    const item = {
+      ...d,
+      g: groupName.nt,
+      s: subGroupName.nt
+    }
+    const inGroup = group.find(g => g.name === groupName.n)
     if (!inGroup) {
       group.push({
-        name: d.g,
-        hash: encodeURIComponent(d.g),
-        icon: d.e,
+        name: groupName.n,
+        localeName: groupName.nt,
+        hash: encodeURIComponent(groupName.n),
+        icon: item.e,
         children: [
           {
-            name: d.s,
-            data: [d]
+            name: subGroupName.n,
+            localeName: subGroupName.nt,
+            data: [item]
           }
         ]
       })
     } else {
       if (groupBySubGroup.value) {
-        const inSubGroup = inGroup.children.find((g: any) => g.name === d.s)
+        const inSubGroup = inGroup.children.find((g: any) => g.name === subGroupName.n)
         if (!inSubGroup) {
           inGroup.children.push({
-            name: d.s,
-            data: [d]
+            name: subGroupName.n,
+            localeName: subGroupName.nt,
+            data: [item]
           })
         } else {
-          inSubGroup.data.push(d)
+          inSubGroup.data.push(item)
         }
       } else {
-        inGroup.children[0].data.push(d)
+        inGroup.children[0].data.push(item)
       }
     }
   })
@@ -235,7 +266,16 @@ const emoji = ref()
 onBeforeRouteLeave(to => {
   if ((to.name as string).startsWith('id__')) {
     const emojiId = to.params.id as string
-    emoji.value = data.value.find((d: any) => d.c === emojiId)
+    const target = data.value?.emojis.find((d: any) => d.c === emojiId)
+    if (target) {
+      const groupName = data.value?.groups[target.g]
+      const subGroupName = data.value?.groups[target.s]
+      emoji.value = {
+        ...target,
+        g: groupName.nt,
+        s: subGroupName.nt
+      }
+    }
     showDetail.value = true
     window.history.pushState('detailPage', '', to.path)
     return false
@@ -384,7 +424,7 @@ function modalClick (ev: any) {
         @click="navClick(g.name)"
       >
         <span class="text-2xl mr-2 w-8 inline-block text-center">{{ g.icon }}</span>
-        <span>{{ g.name }}</span>
+        <span>{{ g.localeName }}</span>
         <Underline v-if="activeNav === g.name" class="absolute left-10 bottom-0 text-xs text-rose-500" />
       </NuxtLink>
     </nav>
@@ -426,7 +466,7 @@ function modalClick (ev: any) {
     <template v-if="!loading">
       <div v-for="g in groupData" :id="g.hash" :key="g.hash" ref="doms" class="card p-4 mb-6 rounded-2xl">
         <div v-for="sg in g.children" :key="sg.name">
-          <h3 v-if="groupBySubGroup" class="pl-2 mb-2 mt-4">{{ sg.name }}</h3>
+          <h3 v-if="groupBySubGroup" class="pl-2 mb-2 mt-4">{{ sg.localeName }}</h3>
           <div class="grid flex-wrap gap-1" style="grid-template-columns: repeat(auto-fill, minmax(72px, 1fr))">
             <template v-if="clickTo === 'detail'">
               <NuxtLink
@@ -435,7 +475,7 @@ function modalClick (ev: any) {
                 :to="localePath(`/${d.c}`)"
                 :style="{ fontSize: `${renderEmojiSize}px` }"
                 class="tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl"
-                :data-tip="d.n"
+                :data-tip="d.t"
               >
                 {{ d.e }}
               </NuxtLink>

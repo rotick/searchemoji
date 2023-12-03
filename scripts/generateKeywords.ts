@@ -27,33 +27,51 @@ async function main () {
   } catch (e: any) {
     console.log(`emoji index read error：${e.message}`)
   }
+  let groupNames: any[] = []
+  try {
+    const groupDataStr = await fs.readFile('./data/groupNames.json', { encoding: 'utf-8' })
+    groupNames = JSON.parse(groupDataStr)
+  } catch (e: any) {
+    console.log(`emoji data read error：${e.message}`)
+  }
+  const skinToneSubGroupIndex = groupNames.findIndex(gn => gn === 'skin-tone')
 
   console.log('total:', emojiData.length)
   const emojis = emojiData
-    .filter(ed => !existIndex.find(ex => ex.e === ed.e) && (!ed.n.includes('skin tone') || ed.s === 'skin-tone'))
+    .filter(ed => !existIndex.find(ex => ex.e === ed.e) && (!ed.n.includes('skin tone') || ed.s === skinToneSubGroupIndex))
     .map(ed => `${ed.e}:${ed.n}`)
-  console.log('pending:', emojis.length)
+  let emojisLength = emojis.length
   const langs = locale.map(l => l.code)
 
   const batchEmojis = batch(emojis, 1)
 
   for (const currentWords of batchEmojis) {
+    emojisLength--
+    console.log('pending:', emojisLength)
     const prompt = keywords(langs, currentWords)
-    const res: any = await chatGPT(prompt)
-    console.log(`tokens: ${res.usage.total_tokens} (${res.usage.prompt_tokens} + ${res.usage.completion_tokens})`)
-    const data = res.choices[0].message.content
-    const JSONData = JSON.parse(data)
-    // @ts-expect-error wtf
-    const aiRes = Object.values(JSONData)?.[0][0]
-    // console.log(stringify(aiRes))
-    const target = emojiData.find(ed => ed.e === aiRes.emoji)
-    target.k = aiRes.keywords
-    target.t = aiRes.name
-    existIndex.push(target)
-    await fs.writeFile(file, stringify(existIndex))
+    try {
+      const res: any = await chatGPT(prompt)
+      console.log(`tokens: ${res.usage.total_tokens} (${res.usage.prompt_tokens} + ${res.usage.completion_tokens})`)
+      const data = res.choices[0].message.content
+      const JSONData = JSON.parse(data)
+      // @ts-expect-error wtf
+      const aiRes = Object.values(JSONData)?.[0][0]
+      const langsLength = Object.keys(aiRes.keywords).length
+      if (langsLength < 30) {
+        throw new Error('Bad result')
+      }
+      // console.log(stringify(aiRes))
+      const target = emojiData.find(ed => ed.e === aiRes.emoji)
+      target.k = aiRes.keywords
+      target.t = aiRes.name
+      existIndex.push(target)
+      await fs.writeFile(file, stringify(existIndex))
+    } catch (err) {
+      console.log('Something Wrong: ', err)
+    }
   }
   const skinToneData = emojiData
-    .filter(ed => !existIndex.find(ex => ex.e === ed.e) && ed.n.includes('skin tone') && ed.s !== 'skin-tone')
+    .filter(ed => !existIndex.find(ex => ex.e === ed.e) && ed.n.includes('skin tone') && ed.s !== skinToneSubGroupIndex)
     .map(ed => ({
       ...ed,
       k: null,

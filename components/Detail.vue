@@ -80,7 +80,7 @@ const platform = [
         <h2 class="text-[128px]">{{ data.e }}</h2>
       </div>
       <div>
-        <h3 class="font-bold text-2xl color-title text-center">{{ data.n }}</h3>
+        <h3 class="font-bold text-2xl color-title text-center">{{ data.t }}</h3>
         <button
           class="px-6 h-12 rounded-2xl bg-rose-500 text-white flex items-center mx-auto my-6 md:tooltip"
           :data-tip="`${isMac ? '⌘' : 'Ctrl'} + C`"
@@ -100,7 +100,7 @@ const platform = [
         <div class="flex justify-between border-b border-main py-2">
           <span class="shrink-0 mr-4 my-0.5">{{ $t('searchKeyword') }}</span>
           <div class="flex items-center flex-wrap justify-end">
-            <span v-for="k in data.keywords" :key="k" class="card color-action rounded-xl px-2 ml-1 my-0.5">{{ k }}</span>
+            <span v-for="k in data.k[locale]" :key="k" class="card color-action rounded-xl px-2 ml-1 my-0.5">{{ k }}</span>
           </div>
         </div>
         <div class="flex justify-between border-b border-main py-2">
@@ -125,7 +125,7 @@ const platform = [
           </div>
           <div class="md:flex md:mt-2">
             <div v-for="p in platform" :key="p.imgPath" class="mb-2 md:flex-1 md:flex md:justify-center md:tooltip" :data-tip="$t('imgCopyTip')">
-              <img src="/logo.png" width="72" height="72" :alt="$t('platformImg', { name: data.n, platform: p.name })">
+              <img :src="`/emojis/${p.imgPath}/${data.c}.png`" width="72" height="72" :alt="$t('platformImg', { name: data.n, platform: p.name })">
             </div>
           </div>
         </div>
