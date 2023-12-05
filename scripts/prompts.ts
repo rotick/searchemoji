@@ -92,3 +92,44 @@ Now, please translate the following group names into the specified languages:
 Group names: ${JSON.stringify(names)}
 Target languages: ${JSON.stringify(langs)}
 `
+
+export const complementNamePrompt = (
+  langs: string[],
+  emojis: string[]
+) => `I want to build an Emoji search engine to help people quickly find the Emoji they want. My strategy involves associating, expanding, and translating the meanings and names in multiple languages. This way, users can search for Emojis using their native language.
+
+I need your help as a large language model to generate these names. I will provide you with batches of Emoji characters and their Unicode-defined official names, separated by ":" and given in the form of an array, for example:
+["😀:grinning face", "😃:grinning face with big eyes"]
+
+I will also inform you each time about the languages for which I want keywords. I will provide the ISO 639-1 codes for the target language in the form of an array, such as: ["en","zh","es",...]
+
+For each Emoji character, you need to translate its name into the corresponding names in various languages. Please return the results in JSON format, for example:
+
+\`\`\`
+[
+  {
+    "emoji": "😀",
+    "name": {
+      "en": "Grinning Face",
+      "zh": "嘿嘿",
+      …
+    }
+  }
+  {
+    "emoji": "😃",
+    "name": {
+      "en": "Grinning Face with Big Eyes",
+      "zh": "哈哈",
+      …
+    }
+  }
+]
+\`\`\`
+As you can see, the returned JSON object is also an array. Each array item contains the Emoji character I provided, the names in various languages under "name". The keys in the "name" objects are the ISO 639-1 codes for the respective languages, with values being the names for each language.
+
+When generating names in each language, if the language follows the convention of capitalizing the first letter, you also need to capitalize the first letter of that name.
+
+Now, please provide the batch of Emoji and the target languages for generating keywords:
+Target languages: ${JSON.stringify(langs)}
+Emoji: ${JSON.stringify(emojis)}
+`

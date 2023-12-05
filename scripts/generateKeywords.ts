@@ -11,6 +11,7 @@ function batch (arr: any[], size: number) {
   }
   return batches
 }
+let retryTimes = 0
 async function main () {
   const file = './data/emoji-index.json'
   let emojiData: any[] = []
@@ -27,6 +28,8 @@ async function main () {
   } catch (e: any) {
     console.log(`emoji index read error：${e.message}`)
   }
+  // console.log(emojiData.length, existIndex.length)
+  // return
   let groupNames: any[] = []
   try {
     const groupDataStr = await fs.readFile('./data/groupNames.json', { encoding: 'utf-8' })
@@ -47,15 +50,21 @@ async function main () {
 
   for (const currentWords of batchEmojis) {
     emojisLength--
-    console.log('pending:', emojisLength)
+    console.log('pending:', emojisLength, batchEmojis)
     const prompt = keywords(langs, currentWords)
     try {
       const res: any = await chatGPT(prompt)
       console.log(`tokens: ${res.usage.total_tokens} (${res.usage.prompt_tokens} + ${res.usage.completion_tokens})`)
       const data = res.choices[0].message.content
+      console.log(data)
       const JSONData = JSON.parse(data)
-      // @ts-expect-error wtf
-      const aiRes = Object.values(JSONData)?.[0][0]
+      let aiRes: any
+      if (JSONData.emoji) {
+        aiRes = JSONData
+      } else {
+        // @ts-expect-error wtf
+        aiRes = Object.values(JSONData)?.[0][0]
+      }
       const langsLength = Object.keys(aiRes.keywords).length
       if (langsLength < 30) {
         throw new Error('Bad result')
@@ -78,6 +87,14 @@ async function main () {
       t: null
     }))
   existIndex.push(...skinToneData)
-  await fs.writeFile(file, stringify(existIndex))
+  // sort
+  existIndex.sort((x, y) => {
+    return emojiData.indexOf(x.c) - emojiData.indexOf(y.c)
+  })
+  await fs.writeFile(file, JSON.stringify(existIndex))
+  if (retryTimes < 5 && emojisLength > 0) {
+    retryTimes++
+    await main()
+  }
 }
 main()
