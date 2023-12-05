@@ -88,8 +88,12 @@ async function main () {
     }))
   existIndex.push(...skinToneData)
   // sort
+  const indexMap = new Map()
+  emojiData.forEach((item, index) => {
+    indexMap.set(item.c, index)
+  })
   existIndex.sort((x, y) => {
-    return emojiData.indexOf(x.c) - emojiData.indexOf(y.c)
+    return indexMap.get(x.c) - indexMap.get(y.c)
   })
   await fs.writeFile(file, JSON.stringify(existIndex))
   if (retryTimes < 5 && emojisLength > 0) {
