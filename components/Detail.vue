@@ -61,10 +61,6 @@ const platform = [
   {
     name: 'Whatsapp',
     imgPath: 'whatsapp'
-  },
-  {
-    name: 'Messenger',
-    imgPath: 'messenger'
   }
 ]
 </script>

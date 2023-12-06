@@ -392,7 +392,7 @@ function modalClick (ev: any) {
             class="flex items-center justify-between h-10 card pl-4 pr-2 rounded-t-2xl cursor-default"
             :class="active ? 'rounded-b-none border-b-transparent' : 'rounded-b-2xl'"
           >
-            <span>{{ $t('status') }}</span>
+            <span>{{ $t('qualified') }}</span>
             <div class="flex items-center">
               <div class="text-sm color-secondary">{{ quality.length }} / 4</div>
               <i
@@ -407,7 +407,7 @@ function modalClick (ev: any) {
         <template #content>
           <ul class="card p-4 rounded-b-2xl w-full border-t-0">
             <li v-for="q in qualityOptions" :key="q" class="h-7 whitespace-nowrap">
-              <label class="flex items-center color-action"><input v-model="quality" type="checkbox" :value="q" class="mr-2"> {{ q }}</label>
+              <label class="flex items-center color-action"><input v-model="quality" type="checkbox" :value="q" class="mr-2"> {{ $t(q) }}</label>
             </li>
           </ul>
         </template>
@@ -439,7 +439,7 @@ function modalClick (ev: any) {
             :key="st.name"
             class="border border-1 cursor-default flex justify-center items-center mr-1 w-5 h-5 tooltip"
             :class="skinTone.includes(st.name) ? 'border-rose-500' : 'border-transparent'"
-            :data-tip="st.name"
+            :data-tip="$t(st.name)"
             @click="toggleSkinTone(st.name)"
           >
             {{ st.emoji }}
@@ -487,7 +487,7 @@ function modalClick (ev: any) {
                 href="javascript:;"
                 :style="{ fontSize: `${renderEmojiSize}px` }"
                 class="tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl relative"
-                :data-tip="$t('clickToCopy') + d.n"
+                :data-tip="$t('clickToCopy') + d.t"
                 @click="copyEmoji(d.e)"
               >
                 {{ d.e }}
