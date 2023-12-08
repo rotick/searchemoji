@@ -10,7 +10,6 @@ const { locale, locales } = useI18n()
 const flexSearch = new Document({
   document: {
     id: 'c',
-    tag: 'g',
     index: [
       {
         field: 'e',
@@ -32,11 +31,28 @@ const flexSearch = new Document({
         tokenize: 'forward',
         resolution: 8
       },
-      {
-        field: `k:${locale.value}`,
-        tokenize: 'forward',
-        resolution: 8
-      }
+      ['zh-hans', 'zh-hant', 'ja', 'ko'].includes(locale.value)
+        ? {
+            field: `k:${locale.value}`,
+            tokenize: 'forward',
+            encode: str => str.replace(/[\x00-\x7F]/g, '').split(''),
+            resolution: 8
+          }
+        : ['ar', 'he'].includes(locale.value)
+            ? {
+                field: `k:${locale.value}`,
+                encode: false,
+                tokenize: 'forward',
+                // @ts-expect-error wtf
+                rtl: true,
+                split: /\s+/,
+                resolution: 8
+              }
+            : {
+                field: `k:${locale.value}`,
+                tokenize: 'forward',
+                resolution: 8
+              }
     ],
     store: true
   }
@@ -45,17 +61,45 @@ interface IndexData {
   emojis: any[]
   groups: any[]
 }
+function extractName (str: string) {
+  if (str.includes(':') && !str.includes(',')) {
+    str = str.replace(/: \w+(-\w+)* skin tone/g, '')
+  }
+  if (str.includes(':') && str.includes(',')) {
+    str = str
+      .replace(/\w+(-\w+)* skin tone, /g, '')
+      .replace(/(,|:) \w+(-\w+)* skin tone/g, '')
+      .replace(/ \w+(-\w+)* skin tone/g, '')
+  }
+  return str.trim()
+}
 const { data, error, pending } = useFetch<IndexData>('/api/emojis', { query: { locale: locale.value } })
 const keyword = ref((route.query.q as string) || '')
 const searchResult = ref<any>([])
 const searching = ref(false)
+
 watch(
   data,
   val => {
     if (val?.emojis.length) {
-      val.emojis.forEach((item: any) => {
+      const t = Date.now()
+      const skinToneGroupIndex = val?.groups.findIndex(gn => gn.n === 'People & Body')
+      const hasSkinTone = val.emojis.filter(ve => ve.g === skinToneGroupIndex && !ve.n.includes('skin tone'))
+      for (const item of val.emojis) {
+        // To save tokens, tone-modified emoji will not have their own separate keyword generation, but will share the keywords from their non-tone-modified versions.
+        if (item.n.includes('skin tone') && !item.t) {
+          const name = extractName(item.n)
+          const target = hasSkinTone.find(hst => hst.n === name)
+          if (target) {
+            item.t = `${target.t} (${item.n})`
+            item.k = target.k
+          } else {
+            item.t = item.n
+          }
+        }
         flexSearch.add(item)
-      })
+      }
+      console.log(Date.now() - t)
       nextTick(() => {
         if (keyword.value) {
           search()
@@ -69,7 +113,6 @@ watch(
 )
 function search () {
   const result = flexSearch.search(keyword.value, { limit: 10000, enrich: true })
-  // todo add skin tone
   searchResult.value = result
     .map((item: any) => {
       return item.result.map((r: any) => r.doc)
@@ -209,11 +252,14 @@ function navClick (name: string) {
   }
 }
 const doms = ref<HTMLElement[]>([])
+function setGroupRef (el: HTMLElement, index: number) {
+  doms.value[index] = el
+}
 const y = ref(0)
 const handleScroll = useThrottleFn(() => {
   y.value = document.documentElement.scrollTop
   doms.value.forEach(tag => {
-    const top = tag.getBoundingClientRect().top
+    const top = tag?.getBoundingClientRect().top
     if (top <= 106) {
       // 10px fault tolerance
       activeNav.value = decodeURIComponent(tag.id)
@@ -331,7 +377,7 @@ function modalClick (ev: any) {
                 v-for="l in locales"
                 :key="l.code"
                 :to="switchLocalePath(l.code)"
-                class="flex items-center h-8 px-2 rounded-xl w-[122px] line-clamp-1 whitespace-nowrap"
+                class="h-8 px-2 rounded-xl w-[122px] line-clamp-1 break-all leading-8"
                 :class="l.code === locale ? 'color-disable cursor-default' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700 hover:color-action'"
                 @click="close()"
               >
@@ -464,7 +510,17 @@ function modalClick (ev: any) {
     </div>
     <div v-if="!loading && !error && !groupData.length" class="card p-6 rounded-2xl">⚠️ {{ $t('noResults', { keyword: keyword }) }}</div>
     <template v-if="!loading">
-      <div v-for="g in groupData" :id="g.hash" :key="g.hash" ref="doms" class="card p-4 mb-6 rounded-2xl">
+      <div
+        v-for="(g, i) in groupData"
+        :id="g.hash"
+        :key="g.hash"
+        :ref="
+          el => {
+            setGroupRef(el, i)
+          }
+        "
+        class="card p-4 mb-6 rounded-2xl"
+      >
         <div v-for="sg in g.children" :key="sg.name">
           <h3 v-if="groupBySubGroup" class="pl-2 mb-2 mt-4">{{ sg.localeName }}</h3>
           <div class="grid flex-wrap gap-1" style="grid-template-columns: repeat(auto-fill, minmax(72px, 1fr))">
