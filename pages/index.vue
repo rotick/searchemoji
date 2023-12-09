@@ -358,21 +358,21 @@ function modalClick (ev: any) {
 
 <template>
   <header
-    class="flex justify-between items-center h-20 px-6 z-10 sticky top-0 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80"
+    class="flex justify-between items-start md:items-center h-24 px-4 md:h-20 md:px-6 z-[11] sticky top-0 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md border-b-0 md:border-b border-zinc-200/80 dark:border-zinc-800/80"
   >
-    <div class="flex items-center">
-      <NuxtLink class="flex items-center w-[256px]" to="/" title="SearchEmoji">
-        <img src="/logo.png" class="w-11 h-11 mr-3" alt="SearchEmoji">
-        <Logo class="text-2xl color-title mt-0.5" />
+    <div class="flex items-start md:items-center flex-wrap max-w-full">
+      <NuxtLink class="flex items-center h-14 md:h-20 md:w-[256px]" to="/" title="SearchEmoji">
+        <img src="/logo.png" class="w-9 h-9 mr-2 md:w-11 md:h-11 md:mr-3" alt="SearchEmoji">
+        <Logo class="text-lg md:text-2xl color-title mt-0.5" />
         <h1 class="w-0 h-0 overflow-hidden">{{ $t('logoTips') }}</h1>
       </NuxtLink>
-      <div class="flex items-center card rounded-2xl w-[560px] h-10">
-        <DropDown class="flex items-center pl-4 relative border-r border-zinc-200/80 dark:border-zinc-700/80 cursor-default" :top="30" :left="0">
+      <div class="items-center card rounded-2xl md:w-[560px] max-w-full h-9 md:h-10 flex">
+        <DropDown class="flex items-center pl-4 relative border-r border-zinc-200/80 dark:border-zinc-700/80 cursor-default shrink-0" :top="30" :left="0">
           <template #default="{ active }">
-            <i class="icon-[ph--translate-bold] text-xl mr-1 color-action" role="img" aria-hidden="true" />
-            <span class="color-action select-none">{{ currentLocale?.name }}</span>
+            <i class="icon-[ph--translate-bold] text-xl mr-1 color-action shrink-0" role="img" aria-hidden="true" />
+            <span class="color-action shrink-0 select-none">{{ currentLocale?.name }}</span>
             <i
-              class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-action transition-all"
+              class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-action transition-all shrink-0"
               role="img"
               :class="{ 'rotate-180': active }"
               aria-hidden="true"
@@ -398,7 +398,7 @@ function modalClick (ev: any) {
           v-model="keyword"
           type="search"
           enterkeyhint="search"
-          class="bg-transparent flex-grow outline-none px-2 color-title"
+          class="bg-transparent flex-grow outline-none px-2 color-title min-w-0"
           :placeholder="`${$t('placeholder')} (${isMac ? '⌘' : 'Ctrl'} + K)`"
           @input="searchInput"
           @keyup.enter="search"
@@ -407,7 +407,7 @@ function modalClick (ev: any) {
           <i class="icon-[solar--magnifer-linear] text-lg md:text-2xl color-secondary shrink-0" role="img" aria-hidden="true" />
         </button>
       </div>
-      <div class="flex items-center ml-6">
+      <div class="items-center ml-6 hidden md:flex">
         {{ $t('clickTo') }}
         <DropDown class="flex items-center ml-2 color-action relative cursor-default select-none" :top="24">
           <template #default="{ active }">
@@ -435,10 +435,12 @@ function modalClick (ev: any) {
         </DropDown>
       </div>
     </div>
-    <ToolBar />
+    <ToolBar class="absolute right-4 top-0 h-14 md:static" />
   </header>
-  <aside class="flex-shrink-0 w-[280px] top-20 left-0 bottom-0 fixed overflow-y-auto">
-    <div class="h-[72px] flex items-center px-6">
+  <aside
+    class="flex-shrink-0 sticky md:fixed md:w-[280px] top-24 md:top-20 left-0 bottom-0 overflow-auto z-10 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-b-0"
+  >
+    <div class="h-[72px] hidden md:flex items-center px-6">
       <DropDown class="w-full z-10 select-none" :top="39" :left="0" :right="0">
         <template #default="{ active }">
           <div
@@ -466,22 +468,22 @@ function modalClick (ev: any) {
         </template>
       </DropDown>
     </div>
-    <nav class="px-6">
+    <nav class="px-4 md:px-6 flex md:block w-auto">
       <NuxtLink
         v-for="(g, i) in groupData"
         :key="g.name"
         :to="{ path: route.path, query: route.query, hash: i === 0 ? '' : `#${g.hash}` }"
         replace
-        class="flex items-center h-10 mt-2 relative cursor-pointer"
-        :class="activeNav === g.name ? 'text-rose-500 font-bold' : 'hover:color-action'"
+        class="flex items-center h-10 pr-4 md:pr-0 md:mt-2 relative cursor-pointer"
+        :class="activeNav === g.name ? 'text-rose-500 font-bold' : 'color-action md:hover:color-action'"
         @click="navClick(g.name)"
       >
-        <span class="text-2xl mr-2 w-8 inline-block text-center">{{ g.icon }}</span>
-        <span>{{ g.localeName }}</span>
-        <Underline v-if="activeNav === g.name" class="absolute left-10 bottom-0 text-xs text-rose-500" />
+        <span class="hidden text-2xl mr-2 w-8 md:inline-block text-center">{{ g.icon }}</span>
+        <span class="whitespace-nowrap">{{ g.localeName }}</span>
+        <Underline v-if="activeNav === g.name" class="absolute left-0 md:left-10 bottom-0 text-[8px] md:text-xs text-rose-500" />
       </NuxtLink>
     </nav>
-    <a href="https://yesicon.app" target="_blank" class="no-icon block m-6 card p-4 rounded-2xl opacity-30 hover:opacity-100 transition-all">
+    <a href="https://yesicon.app" target="_blank" class="no-icon hidden md:block m-6 card p-4 rounded-2xl opacity-30 hover:opacity-100 transition-all">
       <div class="flex justify-between items-center">
         <Yesicon class="color-action text-2xl" />
         <span class="text-xl">👈</span>
@@ -489,9 +491,9 @@ function modalClick (ev: any) {
       <p class="mt-3 text-sm">For professional: Multilingual Vector Icon Search Engine, includes more than 20k icons.</p>
     </a>
   </aside>
-  <main class="ml-[280px] mr-6">
-    <div class="flex items-center justify-between h-[72px]">
-      <div class="flex items-center">
+  <main class="mx-4 md:ml-[280px] md:mr-6">
+    <div class="flex items-center md:justify-between h-11 md:h-[72px]">
+      <div class="flex items-center flex-grow justify-between md:justify-start">
         <div class="flex items-center">
           <span class="mr-1">{{ $t('skinTone') }}</span>
           <div
@@ -507,7 +509,7 @@ function modalClick (ev: any) {
         </div>
         <div class="ml-4">{{ emojiCount }} {{ $t('emojis') }}</div>
       </div>
-      <div class="flex items-center">
+      <div class="md:flex items-center hidden">
         <div class="flex items-center">{{ $t('group') }} <Toggle v-model="groupBySubGroup" class="ml-1" /></div>
         <div class="items-center hidden md:flex ml-6">
           <span class="shrink-0 mr-4">{{ $t('size') }} {{ emojiSize }}</span>
@@ -533,7 +535,7 @@ function modalClick (ev: any) {
             setGroupRef(el, i)
           }
         "
-        class="card p-4 mb-6 rounded-2xl"
+        class="card md:p-4 mb-6 rounded-2xl"
       >
         <div v-for="sg in g.children" :key="sg.name">
           <h3 v-if="groupBySubGroup" class="pl-2 mb-2 mt-4">{{ sg.localeName }}</h3>
@@ -581,11 +583,11 @@ function modalClick (ev: any) {
     <i class="icon-[material-symbols--rocket] text-rose-500 text-2xl" role="img" aria-hidden="true" />
   </div>
   <transition name="nested" :duration="150">
-    <div v-if="showDetail" class="fixed z-10 top-0 left-0 w-full h-full bg-black/50 dark:bg-black/80 backdrop-blur-sm flex" @click="modalClick">
-      <div ref="iconOverlay" class="inner bg-body h-[90vh] w-[100vw] md:w-[760px] rounded-t-3xl shadow-2xl absolute bottom-0 left-0 md:left-1/2 -ml-[380px]">
+    <div v-if="showDetail" class="fixed z-20 top-0 left-0 w-full h-full bg-black/50 dark:bg-black/80 backdrop-blur-sm flex" @click="modalClick">
+      <div ref="iconOverlay" class="inner bg-body h-[90vh] w-[100vw] md:w-[760px] rounded-t-3xl shadow-2xl absolute bottom-0 left-0 md:left-1/2 md:-ml-[380px]">
         <a
           href="javascript:;"
-          class="absolute z-10 card top-6 right-6 w-8 h-8 rounded-xl text-2xl flex justify-center items-center hover:bg-rose-500 hover:border-rose-500 hover:text-white"
+          class="absolute z-20 card top-4 right-4 md:top-6 md:right-6 w-8 h-8 rounded-xl text-2xl flex justify-center items-center hover:bg-rose-500 hover:border-rose-500 hover:text-white"
           @click="closeDetail"
         >
           <i class="icon-[material-symbols--close]" role="img" aria-hidden="true" />
