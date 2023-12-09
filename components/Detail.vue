@@ -8,6 +8,8 @@ const props = defineProps({
 })
 const route = useRoute()
 const { locale, t } = useI18n()
+const rtl = computed(() => ['ar', 'he'].includes(locale.value))
+
 const id = route.params.id
 const { data, error, execute } = useFetch(`/api/emoji/${id}`, { query: { locale: locale.value }, immediate: process.server })
 if (props.emoji) {
@@ -94,38 +96,42 @@ const platform = [
         <h3 class="font-bold text-2xl color-title text-center">{{ data.t }}</h3>
         <button
           class="px-6 h-12 rounded-2xl bg-rose-500 text-white flex items-center mx-auto my-6 md:tooltip"
+          :class="rtl ? 'flex-row-reverse' : ''"
           :data-tip="`${isMac ? '⌘' : 'Ctrl'} + C`"
           @click="copy(source)"
         >
           <i
-            class="text-xl mr-2"
-            :class="copied ? 'icon-[material-symbols--check-circle] text-success' : 'icon-[material-symbols--content-copy-outline]'"
+            class="text-xl"
+            :class="[copied ? 'icon-[material-symbols--check-circle] text-success' : 'icon-[material-symbols--content-copy-outline]', rtl ? 'ml-2' : 'mr-2']"
             aria-hidden="true"
             role="img"
           />
           {{ $t('copyBtn') }}
         </button>
-        <div class="flex justify-between border-t border-b border-main py-2">
-          <span class="shrink-0 mr-4">{{ $t('unicodeName') }}</span> <span>{{ data.n }}</span>
+        <div class="flex justify-between border-t border-b border-main py-2" :class="rtl ? 'flex-row-reverse' : ''">
+          <span class="shrink-0" :class="rtl ? 'flex-row-reverse ml-4' : 'mr-4'">{{ $t('unicodeName') }}</span> <span>{{ data.n }}</span>
         </div>
-        <div class="flex justify-between border-b border-main py-2">
-          <span class="shrink-0 mr-4 my-0.5">{{ $t('searchKeyword') }}</span>
-          <div class="flex items-center flex-wrap justify-end">
-            <span v-for="k in data.k[locale]" :key="k" class="card color-action rounded-xl px-2 ml-1 my-0.5">{{ k }}</span>
+        <div class="flex justify-between border-b border-main py-2" :class="rtl ? 'flex-row-reverse' : ''">
+          <span class="shrink-0 my-0.5" :class="rtl ? 'flex-row-reverse ml-4' : 'mr-4'">{{ $t('searchKeyword') }}</span>
+          <div class="flex items-center flex-wrap justify-end" :class="rtl ? 'flex-row-reverse' : ''">
+            <span v-for="k in data.k[locale]" :key="k" class="card color-action rounded-xl px-2 my-0.5" :class="rtl ? 'flex-row-reverse mr-1' : 'ml-1'">{{
+              k
+            }}</span>
           </div>
         </div>
-        <div class="flex justify-between border-b border-main py-2">
-          <span class="shrink-0 mr-4">{{ $t('version') }}</span> <span>{{ data.v }}</span>
+        <div class="flex justify-between border-b border-main py-2" :class="rtl ? 'flex-row-reverse' : ''">
+          <span class="shrink-0" :class="rtl ? 'flex-row-reverse ml-4' : 'mr-4'">{{ $t('version') }}</span> <span>{{ data.v }}</span>
         </div>
-        <div class="flex justify-between border-b border-main py-2">
-          <span class="shrink-0 mr-4">{{ $t('code') }}</span> <span>U+{{ data.c.replace(/ /g, ' U+') }}</span>
+        <div class="flex justify-between border-b border-main py-2" :class="rtl ? 'flex-row-reverse' : ''">
+          <span class="shrink-0" :class="rtl ? 'flex-row-reverse ml-4' : 'mr-4'">{{ $t('code') }}</span> <span>U+{{ data.c.replace(/ /g, ' U+') }}</span>
         </div>
-        <div class="flex justify-between border-b border-main py-2">
-          <span class="shrink-0 mr-4">{{ $t('inGroup') }}</span> <span class="text-right">{{ data.g }} > {{ data.s }}</span>
+        <div class="flex justify-between border-b border-main py-2" :class="rtl ? 'flex-row-reverse' : ''">
+          <span class="shrink-0" :class="rtl ? 'flex-row-reverse ml-4' : 'mr-4'">{{ $t('inGroup') }}</span>
+          <span class="text-right">{{ data.g }} > {{ data.s }}</span>
         </div>
       </div>
       <div class="mt-6">
-        <h4 class="font-bold color-action">{{ $t('otherPlatform') }}</h4>
+        <h4 class="font-bold color-action" :class="rtl ? 'text-right' : ''">{{ $t('otherPlatform') }}</h4>
         <div
           class="mt-6 flex justify-between md:block bg-white/90 dark:bg-zinc-800/90 border border-zinc-200/80 dark:border-zinc-700/80 p-4 md:p-0 md:bg-transparent md:dark:bg-transparent md:border-none rounded-2xl"
         >

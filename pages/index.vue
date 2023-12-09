@@ -6,6 +6,7 @@ import { useThrottleFn, watchDebounced, useStorageAsync, useClipboard } from '@v
 const route = useRoute()
 const router = useRouter()
 const { locale, locales } = useI18n()
+const rtl = computed(() => ['ar', 'he'].includes(locale.value))
 const flexSearch = new Document({
   document: {
     id: 'c',
@@ -361,15 +362,20 @@ function modalClick (ev: any) {
     class="flex justify-between items-start md:items-center h-24 px-4 md:h-20 md:px-6 z-[11] sticky top-0 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md border-b-0 md:border-b border-zinc-200/80 dark:border-zinc-800/80"
   >
     <div class="flex items-start md:items-center flex-wrap max-w-full">
-      <NuxtLink class="flex items-center h-14 md:h-20 md:w-[256px]" to="/" title="SearchEmoji">
+      <NuxtLink class="flex items-center h-14 md:h-20 md:w-[256px]" :to="switchLocalePath('/')" title="SearchEmoji">
         <img src="/logo.png" class="w-9 h-9 mr-2 md:w-11 md:h-11 md:mr-3" alt="SearchEmoji">
         <Logo class="text-lg md:text-2xl color-title mt-0.5" />
         <h1 class="w-0 h-0 overflow-hidden">{{ $t('logoTips') }}</h1>
       </NuxtLink>
       <div class="items-center card rounded-2xl md:w-[560px] max-w-full h-9 md:h-10 flex">
-        <DropDown class="flex items-center pl-4 relative border-r border-zinc-200/80 dark:border-zinc-700/80 cursor-default shrink-0" :top="30" :left="0">
+        <DropDown
+          class="flex items-center relative border-r border-zinc-200/80 dark:border-zinc-700/80 cursor-default shrink-0"
+          :class="rtl ? 'flex-row-reverse pr-2 pl-2' : 'pl-4'"
+          :top="30"
+          :left="0"
+        >
           <template #default="{ active }">
-            <i class="icon-[ph--translate-bold] text-xl mr-1 color-action shrink-0" role="img" aria-hidden="true" />
+            <i class="icon-[ph--translate-bold] text-xl color-action shrink-0" :class="rtl ? 'ml-1' : 'mr-1'" role="img" aria-hidden="true" />
             <span class="color-action shrink-0 select-none">{{ currentLocale?.name }}</span>
             <i
               class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-action transition-all shrink-0"
@@ -399,6 +405,7 @@ function modalClick (ev: any) {
           type="search"
           enterkeyhint="search"
           class="bg-transparent flex-grow outline-none px-2 color-title min-w-0"
+          :class="rtl ? 'text-right' : ''"
           :placeholder="`${$t('placeholder')} (${isMac ? '⌘' : 'Ctrl'} + K)`"
           @input="searchInput"
           @keyup.enter="search"
@@ -407,9 +414,9 @@ function modalClick (ev: any) {
           <i class="icon-[solar--magnifer-linear] text-lg md:text-2xl color-secondary shrink-0" role="img" aria-hidden="true" />
         </button>
       </div>
-      <div class="items-center ml-6 hidden md:flex">
+      <div class="items-center ml-6 hidden md:flex" :class="rtl ? 'flex-row-reverse' : ''">
         {{ $t('clickTo') }}
-        <DropDown class="flex items-center ml-2 color-action relative cursor-default select-none" :top="24">
+        <DropDown class="flex items-center color-action relative cursor-default select-none" :class="rtl ? 'flex-row-reverse mr-2' : 'ml-2'" :top="24">
           <template #default="{ active }">
             {{ $t(clickTo) }}
             <i
@@ -444,11 +451,11 @@ function modalClick (ev: any) {
       <DropDown class="w-full z-10 select-none" :top="39" :left="0" :right="0">
         <template #default="{ active }">
           <div
-            class="flex items-center justify-between h-10 card pl-4 pr-2 rounded-t-2xl cursor-default"
-            :class="active ? 'rounded-b-none border-b-transparent' : 'rounded-b-2xl'"
+            class="flex items-center justify-between h-10 card rounded-t-2xl cursor-default"
+            :class="[active ? 'rounded-b-none border-b-transparent' : 'rounded-b-2xl', rtl ? 'flex-row-reverse pl-2 pr-4' : 'pl-4 pr-2']"
           >
             <span>{{ $t('qualified') }}</span>
-            <div class="flex items-center">
+            <div class="flex items-center" :class="rtl ? 'flex-row-reverse' : ''">
               <div class="text-sm color-secondary shrink-0">{{ quality.length }} / 4</div>
               <i
                 class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-secondary transition-all shrink-0"
@@ -462,7 +469,7 @@ function modalClick (ev: any) {
         <template #content>
           <ul class="card p-4 rounded-b-2xl w-full border-t-0">
             <li v-for="q in qualityOptions" :key="q" class="h-7 whitespace-nowrap">
-              <label class="flex items-center color-action"><input v-model="quality" type="checkbox" :value="q" class="mr-2"> {{ $t(q) }}</label>
+              <label class="flex items-center color-action" :class="rtl ? 'flex-row-reverse' : ''"><input v-model="quality" type="checkbox" :value="q" :class="rtl ? 'ml-2' : 'mr-2'"> {{ $t(q) }}</label>
             </li>
           </ul>
         </template>
@@ -474,13 +481,17 @@ function modalClick (ev: any) {
         :key="g.name"
         :to="{ path: route.path, query: route.query, hash: i === 0 ? '' : `#${g.hash}` }"
         replace
-        class="flex items-center h-10 pr-4 md:pr-0 md:mt-2 relative cursor-pointer"
-        :class="activeNav === g.name ? 'text-rose-500 font-bold' : 'color-action md:hover:color-action'"
+        class="flex items-center h-10 pr-4 md:pr-0 md:mb-2 relative cursor-pointer"
+        :class="[activeNav === g.name ? 'text-rose-500 font-bold' : 'md:hover:color-action', rtl ? 'flex-row-reverse' : '']"
         @click="navClick(g.name)"
       >
-        <span class="hidden text-2xl mr-2 w-8 md:inline-block text-center">{{ g.icon }}</span>
+        <span class="hidden text-2xl w-8 md:inline-block text-center" :class="rtl ? 'ml-2' : 'mr-2'">{{ g.icon }}</span>
         <span class="whitespace-nowrap">{{ g.localeName }}</span>
-        <Underline v-if="activeNav === g.name" class="absolute left-0 md:left-10 bottom-0 text-[8px] md:text-xs text-rose-500" />
+        <Underline
+          v-if="activeNav === g.name"
+          class="absolute bottom-0 text-[8px] md:text-xs text-rose-500"
+          :class="rtl ? 'right-4 md:right-10' : 'left-0 md:left-10'"
+        />
       </NuxtLink>
     </nav>
     <a href="https://yesicon.app" target="_blank" class="no-icon hidden md:block m-6 card p-4 rounded-2xl opacity-30 hover:opacity-100 transition-all">
@@ -494,7 +505,7 @@ function modalClick (ev: any) {
   <main class="mx-4 md:ml-[280px] md:mr-6">
     <div class="flex items-center md:justify-between h-11 md:h-[72px]">
       <div class="flex items-center flex-grow justify-between md:justify-start">
-        <div class="flex items-center">
+        <div class="flex items-center" :class="rtl ? 'flex-row-reverse' : ''">
           <span class="mr-1">{{ $t('skinTone') }}</span>
           <div
             v-for="st in skinToneOptions"
@@ -510,7 +521,9 @@ function modalClick (ev: any) {
         <div class="ml-4">{{ emojiCount }} {{ $t('emojis') }}</div>
       </div>
       <div class="md:flex items-center hidden">
-        <div class="flex items-center">{{ $t('group') }} <Toggle v-model="groupBySubGroup" class="ml-1" /></div>
+        <div class="flex items-center" :class="rtl ? 'flex-row-reverse' : ''">
+          {{ $t('group') }} <Toggle v-model="groupBySubGroup" :class="rtl ? 'flex-row-reverse mr-1' : 'ml-1'" />
+        </div>
         <div class="items-center hidden md:flex ml-6">
           <span class="shrink-0 mr-4">{{ $t('size') }} {{ emojiSize }}</span>
           <Range v-model="emojiSize" :min="16" :max="48" />
