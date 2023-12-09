@@ -361,13 +361,13 @@ function modalClick (ev: any) {
   <header
     class="flex justify-between items-start md:items-center h-24 px-4 md:h-20 md:px-6 z-[11] sticky top-0 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md border-b-0 md:border-b border-zinc-200/80 dark:border-zinc-800/80"
   >
-    <div class="flex items-start md:items-center flex-wrap max-w-full">
-      <NuxtLink class="flex items-center h-14 md:h-20 md:w-[256px]" :to="switchLocalePath('/')" title="SearchEmoji">
+    <div class="flex items-center md:items-center flex-wrap max-w-full">
+      <NuxtLink class="flex items-center h-14 md:h-20 w-[168px] md:w-[256px]" :to="switchLocalePath('/')" title="SearchEmoji">
         <img src="/logo.png" class="w-9 h-9 mr-2 md:w-11 md:h-11 md:mr-3" alt="SearchEmoji">
         <Logo class="text-lg md:text-2xl color-title mt-0.5" />
         <h1 class="w-0 h-0 overflow-hidden">{{ $t('logoTips') }}</h1>
       </NuxtLink>
-      <div class="items-center card rounded-2xl md:w-[560px] max-w-full h-9 md:h-10 flex">
+      <div class="items-center card rounded-2xl md:w-[360px] lg:w-[420px] xl:w-[560px] max-w-full h-9 md:h-10 flex flex-grow">
         <DropDown
           class="flex items-center relative border-r border-zinc-200/80 dark:border-zinc-700/80 cursor-default shrink-0"
           :class="rtl ? 'flex-row-reverse pr-2 pl-2' : 'pl-4'"
@@ -414,7 +414,7 @@ function modalClick (ev: any) {
           <i class="icon-[solar--magnifer-linear] text-lg md:text-2xl color-secondary shrink-0" role="img" aria-hidden="true" />
         </button>
       </div>
-      <div class="items-center ml-6 hidden md:flex" :class="rtl ? 'flex-row-reverse' : ''">
+      <div class="items-center ml-6 hidden lg:flex" :class="rtl ? 'flex-row-reverse' : ''">
         {{ $t('clickTo') }}
         <DropDown class="flex items-center color-action relative cursor-default select-none" :class="rtl ? 'flex-row-reverse mr-2' : 'ml-2'" :top="24">
           <template #default="{ active }">
@@ -524,7 +524,7 @@ function modalClick (ev: any) {
         <div class="flex items-center" :class="rtl ? 'flex-row-reverse' : ''">
           {{ $t('group') }} <Toggle v-model="groupBySubGroup" :class="rtl ? 'flex-row-reverse mr-1' : 'ml-1'" />
         </div>
-        <div class="items-center hidden md:flex ml-6">
+        <div class="items-center hidden lg:flex ml-6">
           <span class="shrink-0 mr-4">{{ $t('size') }} {{ emojiSize }}</span>
           <Range v-model="emojiSize" :min="16" :max="48" />
         </div>
