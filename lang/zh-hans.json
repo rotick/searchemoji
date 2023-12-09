@@ -6,6 +6,7 @@
     "detailDescription": "{name}({emoji}) 于 v{version} 版本加入到 Emoji 家族，收录在[{group}]分类中，Unicode 的编码为 {code}，官方命名为： {oName}",
     "siteName": "SearchEmoji"
   },
+  "logoTips": "一词搜索，一键复制！",
   "placeholder": "输入关键词搜索",
   "darkTip": "切换到暗黑模式",
   "lightTip": "切换到日间模式",

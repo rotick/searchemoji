@@ -111,13 +111,21 @@ watch(
     immediate: true
   }
 )
+function uniqueByEmoji (arr: any[]) {
+  const seen = new Set()
+  return arr.filter(item => {
+    const k = `${item.e}:${item.n}`
+    return seen.has(k) ? false : seen.add(k)
+  })
+}
 function search () {
   const result = flexSearch.search(keyword.value, { limit: 10000, enrich: true })
-  searchResult.value = result
+  const searRes = result
     .map((item: any) => {
       return item.result.map((r: any) => r.doc)
     })
     .flat()
+  searchResult.value = uniqueByEmoji(searRes)
   searching.value = false
   router.replace({ path: route.path, query: { q: keyword.value || undefined } })
 }
@@ -357,13 +365,13 @@ function modalClick (ev: any) {
       <NuxtLink class="flex items-center w-[256px]" to="/" title="SearchEmoji">
         <img src="/logo.png" class="w-11 h-11 mr-3" alt="SearchEmoji">
         <Logo class="text-2xl color-title mt-0.5" />
-        <h1 class="w-0 h-0 overflow-hidden">Search for Emoji, Click to Copy</h1>
+        <h1 class="w-0 h-0 overflow-hidden">{{ $t('logoTips') }}</h1>
       </NuxtLink>
       <div class="flex items-center card rounded-2xl w-[560px] h-10">
         <DropDown class="flex items-center pl-4 relative border-r border-zinc-200/80 dark:border-zinc-700/80 cursor-default" :top="30" :left="0">
           <template #default="{ active }">
             <i class="icon-[ph--translate-bold] text-xl mr-1 color-action" role="img" aria-hidden="true" />
-            <span class="color-action">{{ currentLocale?.name }}</span>
+            <span class="color-action select-none">{{ currentLocale?.name }}</span>
             <i
               class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-action transition-all"
               role="img"
@@ -402,7 +410,7 @@ function modalClick (ev: any) {
       </div>
       <div class="flex items-center ml-6">
         {{ $t('clickTo') }}
-        <DropDown class="flex items-center ml-2 color-action relative cursor-default">
+        <DropDown class="flex items-center ml-2 color-action relative cursor-default select-none" :top="24">
           <template #default="{ active }">
             {{ $t(clickTo) }}
             <i
@@ -432,7 +440,7 @@ function modalClick (ev: any) {
   </header>
   <aside class="flex-shrink-0 w-[280px] top-20 left-0 bottom-0 fixed overflow-y-auto">
     <div class="h-[72px] flex items-center px-6">
-      <DropDown class="w-full z-10" :top="39" :left="0" :right="0">
+      <DropDown class="w-full z-10 select-none" :top="39" :left="0" :right="0">
         <template #default="{ active }">
           <div
             class="flex items-center justify-between h-10 card pl-4 pr-2 rounded-t-2xl cursor-default"

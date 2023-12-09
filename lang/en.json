@@ -6,6 +6,7 @@
     "detailDescription": "{name}({emoji}) was added to the Emoji family in version {version}, included in the [{group}] category, with a Unicode encoding of {code} and officially named as {oName}",
     "siteName": "SearchEmoji"
   },
+  "logoTips": "Search for Emoji, Click to Copy",
   "placeholder": "Enter a keyword",
   "darkTip": "Switch to dark mode",
   "lightTip": "Switch to light mode",
