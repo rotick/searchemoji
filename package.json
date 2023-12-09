@@ -9,6 +9,7 @@
     "generateEmojiData": "tsx ./scripts/generateEmojiData.ts",
     "generateKeywords": "tsx ./scripts/generateKeywords.ts",
     "generateGroupName": "tsx ./scripts/generateGroupName.ts",
+    "generateLocale": "tsx ./scripts/generateLocale.ts",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "prepare": "husky install"

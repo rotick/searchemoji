@@ -1,4 +1,5 @@
 import locale from './locale'
+import { resolve } from 'node:path'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -30,6 +31,7 @@ export default defineNuxtConfig({
       cookieKey: 'lang',
       cookieCrossOrigin: true
     },
+    langDir: resolve('./lang'),
     locales: locale
   }
 })

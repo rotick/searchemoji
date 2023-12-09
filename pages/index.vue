@@ -448,9 +448,9 @@ function modalClick (ev: any) {
           >
             <span>{{ $t('qualified') }}</span>
             <div class="flex items-center">
-              <div class="text-sm color-secondary">{{ quality.length }} / 4</div>
+              <div class="text-sm color-secondary shrink-0">{{ quality.length }} / 4</div>
               <i
-                class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-secondary transition-all"
+                class="icon-[material-symbols--arrow-drop-down-rounded] text-2xl color-secondary transition-all shrink-0"
                 :class="{ 'rotate-180': active }"
                 role="img"
                 aria-hidden="true"
