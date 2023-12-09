@@ -2,28 +2,22 @@
   <NuxtPage />
 </template>
 <script setup lang="ts">
+const { t } = useI18n()
+const i18nHead = useLocaleHead({
+  addSeoAttributes: true
+})
+const url = useRequestURL()
+// const origin = 'https://' + url.host
+const origin = url.origin
 useHead({
-  // meta: [
-  //   {
-  //     name: 'description',
-  //     content: t('seo.description')
-  //   },
-  //   { name: 'keywords', content: t('seo.keywords') },
-  //   { property: 'og:site_name', content: 'Yesicon' },
-  //   { property: 'og:url', content: `${origin}/` },
-  //   { property: 'og:type', content: 'website' },
-  //   { property: 'og:title', content: t('seo.title') },
-  //   { property: 'og:description', content: t('seo.description') },
-  //   { property: 'og:image', content: `${origin}/card.png` },
-  //   { name: 'twitter:card', content: 'summary_large_image' },
-  //   { name: 'twitter:domain', content: url.host },
-  //   { name: 'twitter:url', content: `${origin}/` },
-  //   { name: 'twitter:title', content: t('seo.title') },
-  //   { name: 'twitter:description', content: t('seo.description') },
-  //   { name: 'twitter:image', content: `${origin}/card.png` },
-  //   { name: 'msapplication-TileColor', content: '#da532c' }
-  // ],
+  htmlAttrs: {
+    lang: i18nHead.value.htmlAttrs?.lang
+  },
+  titleTemplate: titleChunk => {
+    return titleChunk ? `${titleChunk} - SearchEmoji` : `${t('seo.title')}`
+  },
   link: [
+    ...(i18nHead.value.link || []),
     {
       rel: 'icon',
       type: 'image/png',
@@ -45,6 +39,22 @@ useHead({
       rel: 'manifest',
       href: '/site.webmanifest'
     }
+  ],
+  meta: [
+    ...(i18nHead.value?.meta || []),
+    { name: 'description', content: t('seo.description') },
+    { property: 'og:site_name', content: t('seo.siteName') },
+    { property: 'og:url', content: `${origin}/` },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: t('seo.title') },
+    { property: 'og:description', content: t('seo.description') },
+    { property: 'og:image', content: `${origin}/cover.jpg` },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:domain', content: url.host },
+    { name: 'twitter:url', content: `${origin}/` },
+    { name: 'twitter:title', content: t('seo.title') },
+    { name: 'twitter:description', content: t('seo.description') },
+    { name: 'twitter:image', content: `${origin}/cover.jpg` }
   ]
 })
 </script>

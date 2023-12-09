@@ -6,7 +6,7 @@ const locale = [
   },
   {
     code: 'zh-hans',
-    iso: 'zh-CN',
+    iso: 'zh',
     name: '简体中文'
   },
   {
@@ -57,7 +57,8 @@ const locale = [
   {
     code: 'ar',
     iso: 'ar',
-    name: 'العربية'
+    name: 'العربية',
+    dir: 'ltr'
   },
   {
     code: 'it',
@@ -107,7 +108,7 @@ const locale = [
   },
   { code: 'sv', iso: 'sv', name: 'Svenska' },
   { code: 'el', iso: 'el', name: 'Ελληνικά' },
-  { code: 'he', iso: 'he', name: 'עברית‎' },
+  { code: 'he', iso: 'he', name: 'עברית‎', dir: 'ltr' },
   { code: 'fi', iso: 'fi', name: 'Suomi' },
   { code: 'no', iso: 'no', name: 'Norsk' },
   { code: 'da', iso: 'da', name: 'Dansk' },

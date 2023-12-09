@@ -1,8 +1,10 @@
 {
   "seo": {
-    "title": "SearchEmoji - 最强 Emoji 搜索引擎。一词搜索，一键复制！",
+    "title": "SearchEmoji - 支持 30 个语言的 Emoji 搜索引擎。\uD83D\uDD0D一词搜索，\uD83D\uDDB1\uFE0F一键复制！",
     "description": "丰富多彩的 Emoji 助你内容更生动。SearchEmoji 收录最全的 Emoji 表情库，并提供强大的搜索功能，你可以通过关键词精确查找，或者通过分类筛选、预览，并一键复制到你的文章、聊天及社交媒体中。",
-    "detailTitle": "{emoji} {name} Emoji 详情 - SearchEmoji"
+    "detailTitle": "{emoji} {name} - Emoji 详情",
+    "detailDescription": "{name}({emoji}) 于 v{version} 版本加入到 Emoji 家族，收录在[{group}]分类中，Unicode 的编码为 {code}，官方命名为： {oName}",
+    "siteName": "SearchEmoji"
   },
   "placeholder": "输入关键词搜索",
   "darkTip": "切换到暗黑模式",

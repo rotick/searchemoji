@@ -7,7 +7,7 @@ const props = defineProps({
   }
 })
 const route = useRoute()
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const id = route.params.id
 const { data, error, execute } = useFetch(`/api/emoji/${id}`, { query: { locale: locale.value }, immediate: process.server })
 if (props.emoji) {
@@ -15,6 +15,21 @@ if (props.emoji) {
 } else {
   execute()
 }
+const title = computed(() => t('seo.detailTitle', { emoji: data.value.e, name: data.value.t }))
+const description = computed(() =>
+  t('seo.detailDescription', {
+    emoji: data.value.e,
+    name: data.value.t,
+    version: data.value.v,
+    group: data.value.g,
+    code: `U+${data.value.c.replace(/ /g, ' U+')}`,
+    oName: data.value.n
+  })
+)
+useHead({
+  title,
+  meta: [{ name: 'description', content: description }]
+})
 const source = computed(() => data.value.e)
 const { copy, copied } = useClipboard({ source })
 function handleCopy (e: KeyboardEvent) {
