@@ -2,7 +2,6 @@
 import { Document } from '@akryum/flexsearch-es'
 import { qualityMap } from '~/utils'
 import { useThrottleFn, watchDebounced, useStorageAsync, useClipboard } from '@vueuse/core'
-import Footer from '~/components/Footer.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -482,6 +481,13 @@ function modalClick (ev: any) {
         <Underline v-if="activeNav === g.name" class="absolute left-10 bottom-0 text-xs text-rose-500" />
       </NuxtLink>
     </nav>
+    <a href="https://yesicon.app" target="_blank" class="no-icon block m-6 card p-4 rounded-2xl opacity-30 hover:opacity-100 transition-all">
+      <div class="flex justify-between items-center">
+        <Yesicon class="color-action text-2xl" />
+        <span class="text-xl">👈</span>
+      </div>
+      <p class="mt-3 text-sm">For professional: Multilingual Vector Icon Search Engine, includes more than 20k icons.</p>
+    </a>
   </aside>
   <main class="ml-[280px] mr-6">
     <div class="flex items-center justify-between h-[72px]">
