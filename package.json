@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build && npm run copyData",
+    "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "generateEmojiData": "tsx ./scripts/generateEmojiData.ts",
