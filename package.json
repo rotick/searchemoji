@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
+    "build": "nuxt build && npm run copyData",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "generateEmojiData": "tsx ./scripts/generateEmojiData.ts",
@@ -12,7 +12,8 @@
     "generateLocale": "tsx ./scripts/generateLocale.ts",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "copyData": "tsx ./scripts/copyFile.ts"
   },
   "lint-staged": {
     "*.{ts,js,vue,tsx,jsx}": [
@@ -51,7 +52,7 @@
     "eventsource-parser": "^1.1.1",
     "husky": "^8.0.0",
     "json-stringify-pretty-compact": "^4.0.0",
-    "nuxt": "^3.8.1",
+    "nuxt": "^3.8.2",
     "nuxt-gtag": "^1.1.1",
     "prettier": "^3.0.3",
     "tsx": "^4.1.1",
@@ -59,7 +60,8 @@
     "undici": "^5.27.2",
     "vue": "^3.3.8",
     "vue-eslint-parser": "^9.3.2",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "zx": "^7.2.3"
   },
   "dependencies": {
     "@akryum/flexsearch-es": "^0.7.32",

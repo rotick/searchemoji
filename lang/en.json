@@ -39,5 +39,5 @@
   "inGroup": "Group",
   "otherPlatform": "Display on other platform",
   "platformImg": "{name} for {platform} platform",
-  "imgCopyTip": "Right click to copy or download the image"
+  "imgCopyTip": "Right click to copy or download"
 }
