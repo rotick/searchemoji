@@ -530,12 +530,15 @@ function modalClick (ev: any) {
           <div
             v-for="st in skinToneOptions"
             :key="st.name"
-            class="border border-1 cursor-default flex justify-center items-center mr-1 w-5 h-5 tooltip"
+            class="border border-1 cursor-default flex justify-center items-center mr-1 w-5 h-5 tooltip relative"
             :class="skinTone.includes(st.name) ? 'border-rose-500' : 'border-transparent'"
             :data-tip="$t(st.name)"
             @click="toggleSkinTone(st.name)"
           >
             {{ st.emoji }}
+            <span v-if="skinTone.includes(st.name)" class="absolute left-0 top-0 w-full h-full flex justify-center items-center text-rose-500">
+              <i class="icon-[carbon--checkmark]" role="img" aria-hidden="true" />
+            </span>
           </div>
         </div>
         <div class="ml-4">{{ emojiCount }} {{ $t('emojis') }}</div>
