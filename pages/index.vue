@@ -420,7 +420,7 @@ function modalClick (ev: any) {
           enterkeyhint="search"
           class="bg-transparent flex-grow outline-none px-2 color-title min-w-0"
           :class="rtl ? 'text-right' : ''"
-          :placeholder="`${$t('placeholder')} (${isMac ? '⌘' : 'Ctrl'} + K)`"
+          :placeholder="`${$t('placeholder')}${isMobile ? '' : '(' + (isMac ? '⌘' : 'Ctrl') + '+ K)'}`"
           @input="searchInput"
           @keyup.enter="search"
         >
