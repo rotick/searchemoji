@@ -34,13 +34,14 @@ export default defineNuxtConfig({
     locales: locale
   },
   nitro: {
-    publicAssets: [
-      {
-        baseURL: 'emojis',
-        dir: 'public/emojis',
-        maxAge: 60 * 60 * 24 * 7 // 7 days
-      }
-    ]
+    preset: 'cloudflare_pages'
+    // publicAssets: [
+    //   {
+    //     baseURL: 'emojis',
+    //     dir: 'public/emojis',
+    //     maxAge: 60 * 60 * 24 * 7 // 7 days
+    //   }
+    // ]
   },
   routeRules: {
     '/': { prerender: true },
