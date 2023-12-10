@@ -9,7 +9,7 @@ const options: RouterConfig = {
       }
       return {
         el: _to.hash,
-        top: 96,
+        top: window.innerWidth <= 768 ? 148 : 96,
         behavior: 'smooth'
       }
     }

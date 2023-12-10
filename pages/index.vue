@@ -260,6 +260,15 @@ function navClick (name: string) {
   }
 }
 const doms = ref<HTMLElement[]>([])
+const horizontalScroller = ref<HTMLElement>()
+const isMobile = ref(false)
+watch(activeNav, () => {
+  if (isMobile.value) {
+    const target = document.getElementById(`nav-${activeNav.value.replace(/ /g, '-')}`)
+    const left = target ? (horizontalScroller.value?.scrollLeft || 0) + target.getBoundingClientRect().left - 72 : 0
+    horizontalScroller.value?.scrollTo({ left, top: 0, behavior: 'smooth' })
+  }
+})
 function setGroupRef (el: HTMLElement, index: number) {
   doms.value[index] = el
 }
@@ -268,8 +277,9 @@ const handleScroll = useThrottleFn(() => {
   y.value = document.documentElement.scrollTop
   doms.value.forEach(tag => {
     const top = tag?.getBoundingClientRect().top
-    if (top <= 106) {
-      // 10px fault tolerance
+    // 10px fault tolerance, 148 and 96 see app/router.options.ts
+    const triggerScrollTop = isMobile.value ? 148 + 10 : 96 + 10
+    if (top <= triggerScrollTop) {
       activeNav.value = decodeURIComponent(tag.id)
     }
   })
@@ -283,14 +293,15 @@ function handleKeydown (e: KeyboardEvent) {
     searchInputRef.value?.select()
   }
 }
-let isMac = false
+const isMac = ref(false)
 let stopWatchGroupDataChange: any
 onMounted(() => {
   activeNav.value = decodeURIComponent(route.hash)?.replace('#', '') || groupData.value[0]?.name || ''
   stopWatchGroupDataChange = watch(groupData, () => {
     activeNav.value = groupData.value[0]?.name || ''
   })
-  isMac = window.navigator.userAgent.toLowerCase().includes('macintosh')
+  isMac.value = window.navigator.userAgent.toLowerCase().includes('macintosh')
+  isMobile.value = window.innerWidth <= 768
   window.addEventListener('scroll', handleScroll)
   document.addEventListener('keydown', handleKeydown)
 })
@@ -361,13 +372,13 @@ function modalClick (ev: any) {
   <header
     class="flex justify-between items-start md:items-center h-24 px-4 md:h-20 md:px-6 z-[11] sticky top-0 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md border-b-0 md:border-b border-zinc-200/80 dark:border-zinc-800/80"
   >
-    <div class="flex items-center md:items-center flex-wrap max-w-full">
+    <div class="flex items-center md:items-center flex-wrap w-full md:w-auto">
       <NuxtLink class="flex items-center h-14 md:h-20 w-[168px] md:w-[256px]" :to="switchLocalePath('/')" title="SearchEmoji">
         <img src="/logo.png" class="w-9 h-9 mr-2 md:w-11 md:h-11 md:mr-3" alt="SearchEmoji">
         <Logo class="text-lg md:text-2xl color-title mt-0.5" />
         <h1 class="w-0 h-0 overflow-hidden">{{ $t('logoTips') }}</h1>
       </NuxtLink>
-      <div class="items-center card rounded-2xl md:w-[360px] lg:w-[420px] xl:w-[560px] max-w-full h-9 md:h-10 flex flex-grow">
+      <div class="items-center card rounded-2xl w-full md:w-[360px] lg:w-[420px] xl:w-[560px] h-9 md:h-10 flex flex-grow">
         <DropDown
           class="flex items-center relative border-r border-zinc-200/80 dark:border-zinc-700/80 cursor-default shrink-0"
           :class="rtl ? 'flex-row-reverse pr-2 pl-2' : 'pl-4'"
@@ -445,9 +456,10 @@ function modalClick (ev: any) {
     <ToolBar class="absolute right-4 top-0 h-14 md:static" />
   </header>
   <aside
-    class="flex-shrink-0 sticky md:fixed md:w-[280px] top-24 md:top-20 left-0 bottom-0 overflow-auto z-10 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-b-0"
+    ref="horizontalScroller"
+    class="flex-shrink-0 sticky md:fixed md:pr-3 md:w-[268px] top-24 md:top-20 left-0 bottom-0 overflow-auto z-10 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-b-0"
   >
-    <div class="h-[72px] hidden md:flex items-center px-6">
+    <div class="h-[72px] hidden md:flex items-center pl-6">
       <DropDown class="w-full z-10 select-none" :top="39" :left="0" :right="0">
         <template #default="{ active }">
           <div
@@ -475,9 +487,10 @@ function modalClick (ev: any) {
         </template>
       </DropDown>
     </div>
-    <nav class="px-4 md:px-6 flex md:block w-auto">
+    <nav class="px-4 md:pl-6 flex md:block w-auto">
       <NuxtLink
         v-for="(g, i) in groupData"
+        :id="`nav-${g.name.replace(/ /g, '-')}`"
         :key="g.name"
         :to="{ path: route.path, query: route.query, hash: i === 0 ? '' : `#${g.hash}` }"
         replace
@@ -494,7 +507,11 @@ function modalClick (ev: any) {
         />
       </NuxtLink>
     </nav>
-    <a href="https://yesicon.app" target="_blank" class="no-icon hidden md:block m-6 card p-4 rounded-2xl opacity-30 hover:opacity-100 transition-all">
+    <a
+      href="https://yesicon.app"
+      target="_blank"
+      class="no-icon hidden md:block ml-6 mt-6 mb-6 card p-4 rounded-2xl opacity-30 hover:opacity-100 transition-all"
+    >
       <div class="flex justify-between items-center">
         <Yesicon class="color-action text-2xl" />
         <span class="text-xl">👈</span>
