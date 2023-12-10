@@ -82,14 +82,18 @@ watch(
   data,
   val => {
     if (val?.emojis.length) {
-      const t = Date.now()
       const skinToneGroupIndex = val?.groups.findIndex(gn => gn.n === 'People & Body')
-      const hasSkinTone = val.emojis.filter(ve => ve.g === skinToneGroupIndex && !ve.n.includes('skin tone'))
+      const hasSkinTone = val.emojis
+        .filter(ve => ve.g === skinToneGroupIndex && !ve.n.includes('skin tone'))
+        .reduce((acc, cur) => {
+          acc[cur.n] = cur
+          return acc
+        }, {})
       for (const item of val.emojis) {
         // To save tokens, tone-modified emoji will not have their own separate keyword generation, but will share the keywords from their non-tone-modified versions.
         if (item.n.includes('skin tone') && !item.t) {
           const name = extractName(item.n)
-          const target = hasSkinTone.find(hst => hst.n === name)
+          const target = hasSkinTone[name]
           if (target) {
             item.t = `${target.t} (${item.n})`
             item.k = target.k
@@ -99,7 +103,6 @@ watch(
         }
         flexSearch.add(item)
       }
-      console.log(Date.now() - t)
       nextTick(() => {
         if (keyword.value) {
           search()
