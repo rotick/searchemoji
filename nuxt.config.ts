@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     }
   },
   gtag: {
-    id: ''
+    id: 'G-XR9C57QYQ0'
   },
   eslint: {
     lintOnStart: false

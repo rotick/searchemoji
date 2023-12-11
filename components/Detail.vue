@@ -143,7 +143,7 @@ const platform = [
           <div class="md:flex md:mt-2">
             <div v-for="p in platform" :key="p.imgPath" class="mb-2 md:flex-1 md:flex md:justify-center md:tooltip" :data-tip="$t('imgCopyTip')">
               <img
-                :src="`https://img.searchemoji.app/emoji-images/${p.imgPath}/${data.c}.webp`"
+                :src="`https://img.searchemoji.app/emoji-images/${p.imgPath}/${data.c.toLowerCase()}.webp`"
                 width="72"
                 height="72"
                 :alt="$t('platformImg', { name: data.n, platform: p.name })"

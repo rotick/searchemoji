@@ -519,7 +519,7 @@ function modalClick (ev: any) {
         <Yesicon class="color-action text-2xl" />
         <span class="text-xl">👈</span>
       </div>
-      <p class="mt-3 text-sm">For professional: Multilingual Vector Icon Search Engine, includes more than 20k icons.</p>
+      <p class="mt-3 text-sm">For professional: Multilingual Vector Icon Search Engine, includes more than 200k icons.</p>
     </a>
   </aside>
   <main class="mx-4 md:ml-[280px] md:mr-6">
@@ -620,7 +620,7 @@ function modalClick (ev: any) {
   </div>
   <transition name="nested" :duration="150">
     <div v-if="showDetail" class="fixed z-20 top-0 left-0 w-full h-full bg-black/50 dark:bg-black/80 backdrop-blur-sm flex" @click="modalClick">
-      <div ref="iconOverlay" class="inner bg-body h-[90vh] w-[100vw] md:w-[760px] rounded-t-3xl shadow-2xl absolute bottom-0 left-0 md:left-1/2 md:-ml-[380px]">
+      <div ref="iconOverlay" class="inner bg-body h-[90vh] h-[90dvh] w-[100vw] md:w-[760px] rounded-t-3xl shadow-2xl absolute bottom-0 left-0 md:left-1/2 md:-ml-[380px]">
         <a
           href="javascript:;"
           class="absolute z-20 card top-4 right-4 md:top-6 md:right-6 w-8 h-8 rounded-xl text-2xl flex justify-center items-center hover:bg-rose-500 hover:border-rose-500 hover:text-white"
