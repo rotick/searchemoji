@@ -373,7 +373,7 @@ function modalClick (ev: any) {
 
 <template>
   <header
-    class="flex justify-between items-start md:items-center h-24 px-4 md:h-20 md:px-6 z-[11] sticky top-0 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md border-b-0 md:border-b border-zinc-200/80 dark:border-zinc-800/80"
+    class="flex justify-between items-start md:items-center h-24 px-4 md:h-20 md:px-6 z-[11] sticky top-0 bg-zinc-50/80 md:shadow-sm dark:bg-zinc-900/80 backdrop-blur-md border-b-0 md:border-b border-zinc-200/80 dark:border-zinc-800/80"
   >
     <div class="flex items-center md:items-center flex-wrap w-full md:w-auto">
       <NuxtLink class="flex items-center h-14 md:h-20 w-[168px] md:w-[256px]" :to="switchLocalePath('/')" title="SearchEmoji">
@@ -530,7 +530,7 @@ function modalClick (ev: any) {
           <div
             v-for="st in skinToneOptions"
             :key="st.name"
-            class="border border-1 cursor-default flex justify-center items-center mr-1 w-5 h-5 tooltip relative"
+            class="border border-1 cursor-default flex justify-center items-center mr-1 w-5 h-5 md:tooltip relative"
             :class="skinTone.includes(st.name) ? 'border-rose-500' : 'border-transparent'"
             :data-tip="$t(st.name)"
             @click="toggleSkinTone(st.name)"
@@ -571,7 +571,7 @@ function modalClick (ev: any) {
             setGroupRef(el, i)
           }
         "
-        class="card md:p-4 mb-6 rounded-2xl"
+        class="card p-2 md:p-4 mb-6 rounded-2xl"
       >
         <div v-for="sg in g.children" :key="sg.name">
           <h3 v-if="groupBySubGroup" class="pl-2 mb-2 mt-4">{{ sg.localeName }}</h3>
@@ -582,10 +582,10 @@ function modalClick (ev: any) {
                 :key="d.e"
                 :to="localePath(`/${d.c}`)"
                 :style="{ fontSize: `${renderEmojiSize}px` }"
-                class="tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl"
+                class="md:tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl"
                 :data-tip="d.t"
               >
-                {{ d.e }}
+                <span class="inline-block overflow-hidden w-full text-center">{{ d.e }}</span>
               </NuxtLink>
             </template>
             <template v-if="clickTo === 'copy'">
@@ -594,11 +594,11 @@ function modalClick (ev: any) {
                 :key="d.e"
                 href="javascript:;"
                 :style="{ fontSize: `${renderEmojiSize}px` }"
-                class="tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl relative"
+                class="md:tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl relative"
                 :data-tip="$t('clickToCopy') + d.t"
                 @click="copyEmoji(d.e)"
               >
-                {{ d.e }}
+                <span class="inline-block overflow-hidden w-full text-center">{{ d.e }}</span>
                 <div v-if="source === d.e && copied" class="absolute left-0 top-0 w-full h-full rounded-2xl bg-black/50 flex justify-center items-center">
                   <i class="icon-[material-symbols--check-circle] text-xl text-green-500" aria-hidden="true" role="img" />
                 </div>
@@ -612,7 +612,7 @@ function modalClick (ev: any) {
   <Footer />
   <div
     v-show="y > 400"
-    class="cursor-pointer fixed right-4 bottom-4 card w-12 h-12 rounded-2xl flex justify-center items-center shadow-2xl tooltip"
+    class="cursor-pointer fixed right-4 bottom-4 card w-12 h-12 rounded-2xl flex justify-center items-center shadow-2xl md:tooltip"
     :data-tip="$t('backTop')"
     @click="backTop"
   >
@@ -620,7 +620,10 @@ function modalClick (ev: any) {
   </div>
   <transition name="nested" :duration="150">
     <div v-if="showDetail" class="fixed z-20 top-0 left-0 w-full h-full bg-black/50 dark:bg-black/80 backdrop-blur-sm flex" @click="modalClick">
-      <div ref="iconOverlay" class="inner bg-body h-[90vh] !h-[90dvh] w-[100vw] md:w-[760px] rounded-t-3xl shadow-2xl absolute bottom-0 left-0 md:left-1/2 md:-ml-[380px]">
+      <div
+        ref="iconOverlay"
+        class="inner bg-body h-[90vh] !h-[90dvh] w-[100vw] md:w-[760px] rounded-t-3xl shadow-2xl absolute bottom-0 left-0 md:left-1/2 md:-ml-[380px]"
+      >
         <a
           href="javascript:;"
           class="absolute z-20 card top-4 right-4 md:top-6 md:right-6 w-8 h-8 rounded-xl text-2xl flex justify-center items-center hover:bg-rose-500 hover:border-rose-500 hover:text-white"

@@ -1,14 +1,14 @@
 import locale from './locale'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   devServer: {
     port: 4000
   },
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxtjs/eslint-module', '@nuxtjs/i18n', 'nuxt-gtag', '@nuxtjs/google-fonts'],
   colorMode: {
     classSuffix: '',
-    preference: 'system',
+    preference: 'dark',
     fallback: 'dark'
   },
   googleFonts: {

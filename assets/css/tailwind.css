@@ -22,7 +22,7 @@
     @apply border-zinc-200 dark:border-zinc-700
   }
   .card{
-    @apply bg-white/90 dark:bg-zinc-800/90 border border-zinc-200/80 dark:border-zinc-700/80 backdrop-blur-xl
+    @apply bg-white/90 dark:bg-zinc-800/90 border border-zinc-200/80 dark:border-zinc-700/80 backdrop-blur-xl shadow-sm
   }
   .card .card{
     @apply bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700
