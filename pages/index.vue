@@ -376,7 +376,7 @@ function modalClick (ev: any) {
     class="flex justify-between items-start md:items-center h-24 px-4 md:h-20 md:px-6 z-[11] sticky top-0 bg-zinc-50/80 md:shadow-sm dark:bg-zinc-900/80 backdrop-blur-md border-b-0 md:border-b border-zinc-200/80 dark:border-zinc-800/80"
   >
     <div class="flex items-center md:items-center flex-wrap w-full md:w-auto">
-      <NuxtLink class="flex items-center h-14 md:h-20 w-[168px] md:w-[256px]" :to="switchLocalePath('/')" title="SearchEmoji">
+      <NuxtLink class="flex items-center h-14 md:h-20 w-[168px] md:w-[256px]" :to="localePath('/')" title="SearchEmoji">
         <img src="/logo.png" class="w-9 h-9 mr-2 md:w-11 md:h-11 md:mr-3" alt="SearchEmoji">
         <Logo class="text-lg md:text-2xl color-title mt-0.5" />
         <h1 class="w-0 h-0 overflow-hidden">{{ $t('logoTips') }}</h1>
@@ -424,7 +424,7 @@ function modalClick (ev: any) {
           @input="searchInput"
           @keyup.enter="search"
         >
-        <button class="bg-zinc-200/80 dark:bg-zinc-700/80 h-full w-12 rounded-r-2xl flex justify-center items-center" @click="search">
+        <button class="bg-zinc-200/80 dark:bg-zinc-700/80 h-full w-12 rounded-r-2xl flex justify-center items-center" aria-label="Search" @click="search">
           <i class="icon-[solar--magnifer-linear] text-lg md:text-2xl color-secondary shrink-0" role="img" aria-hidden="true" />
         </button>
       </div>
