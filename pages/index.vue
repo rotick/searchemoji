@@ -82,32 +82,34 @@ watch(
   data,
   val => {
     if (val?.emojis.length) {
-      const skinToneGroupIndex = val?.groups.findIndex(gn => gn.n === 'People & Body')
-      const hasSkinTone = val.emojis
-        .filter(ve => ve.g === skinToneGroupIndex && !ve.n.includes('skin tone'))
-        .reduce((acc, cur) => {
-          acc[cur.n] = cur
-          return acc
-        }, {})
-      for (const item of val.emojis) {
-        // To save tokens, tone-modified emoji will not have their own separate keyword generation, but will share the keywords from their non-tone-modified versions.
-        if (item.n.includes('skin tone') && !item.t) {
-          const name = extractName(item.n)
-          const target = hasSkinTone[name]
-          if (target) {
-            item.t = `${target.t} (${item.n})`
-            item.k = target.k
-          } else {
-            item.t = item.n
+      setTimeout(() => {
+        const skinToneGroupIndex = val?.groups.findIndex(gn => gn.n === 'People & Body')
+        const hasSkinTone = val.emojis
+          .filter(ve => ve.g === skinToneGroupIndex && !ve.n.includes('skin tone'))
+          .reduce((acc, cur) => {
+            acc[cur.n] = cur
+            return acc
+          }, {})
+        for (const item of val.emojis) {
+          // To save tokens, tone-modified emoji will not have their own separate keyword generation, but will share the keywords from their non-tone-modified versions.
+          if (item.n.includes('skin tone') && !item.t) {
+            const name = extractName(item.n)
+            const target = hasSkinTone[name]
+            if (target) {
+              item.t = `${target.t} (${item.n})`
+              item.k = target.k
+            } else {
+              item.t = item.n
+            }
           }
+          flexSearch.add(item)
         }
-        flexSearch.add(item)
-      }
-      nextTick(() => {
-        if (keyword.value) {
-          search()
-        }
-      })
+        nextTick(() => {
+          if (keyword.value) {
+            search()
+          }
+        })
+      }, 0)
     }
   },
   {
@@ -134,6 +136,11 @@ function search () {
 }
 function searchInput () {
   searching.value = true
+}
+function inputBlur () {
+  if (!keyword.value) {
+    searching.value = false
+  }
 }
 watchDebounced(
   keyword,
@@ -422,6 +429,7 @@ function modalClick (ev: any) {
           :class="rtl ? 'text-right' : ''"
           :placeholder="`${$t('placeholder')}${isMobile ? '' : '(' + (isMac ? '⌘' : 'Ctrl') + '+ K)'}`"
           @input="searchInput"
+          @blur="inputBlur"
           @keyup.enter="search"
         >
         <button class="bg-zinc-200/80 dark:bg-zinc-700/80 h-full w-12 rounded-r-2xl flex justify-center items-center" aria-label="Search" @click="search">
@@ -585,7 +593,7 @@ function modalClick (ev: any) {
                 class="md:tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl"
                 :data-tip="d.t"
               >
-                <span class="inline-block overflow-hidden w-full text-center">{{ d.e }}</span>
+                <span class="inline-block overflow-hidden w-full text-center emoji-text">{{ d.e }}</span>
               </NuxtLink>
             </template>
             <template v-if="clickTo === 'copy'">
@@ -598,7 +606,7 @@ function modalClick (ev: any) {
                 :data-tip="$t('clickToCopy') + d.t"
                 @click="copyEmoji(d.e)"
               >
-                <span class="inline-block overflow-hidden w-full text-center">{{ d.e }}</span>
+                <span class="inline-block overflow-hidden w-full text-center emoji-text">{{ d.e }}</span>
                 <div v-if="source === d.e && copied" class="absolute left-0 top-0 w-full h-full rounded-2xl bg-black/50 flex justify-center items-center">
                   <i class="icon-[material-symbols--check-circle] text-xl text-green-500" aria-hidden="true" role="img" />
                 </div>
@@ -639,4 +647,8 @@ function modalClick (ev: any) {
   </transition>
 </template>
 
-<style scoped></style>
+<style scoped>
+.emoji-text {
+  content-visibility: auto;
+}
+</style>
