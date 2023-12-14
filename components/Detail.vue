@@ -42,10 +42,10 @@ function handleCopy (e: KeyboardEvent) {
     }
   }
 }
-let isMac = false
+const isMac = ref(false)
 onMounted(() => {
   document.addEventListener('keydown', handleCopy)
-  isMac = window.navigator.userAgent.toLowerCase().includes('macintosh')
+  isMac.value = window.navigator.userAgent.toLowerCase().includes('macintosh')
 })
 onUnmounted(() => {
   document.removeEventListener('keydown', handleCopy)
