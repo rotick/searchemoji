@@ -55,7 +55,9 @@ async function main () {
   } catch (e: any) {
     console.log(`read error：${e.message}`)
   }
-  const emojis = existIndex.filter(ex => (ex.t && Object.keys(ex.t).length < 30) || (ex.k && Object.keys(ex.k).length < 30)).map(ex => `${ex.e}:${ex.n}`)
+  const emojis = existIndex
+    .filter(ex => ex.t === undefined || ex.k === undefined || (ex.t && Object.keys(ex.t).length < 30) || (ex.k && Object.keys(ex.k).length < 30))
+    .map(ex => `${ex.e}:${ex.n}`)
   let emojisLength = emojis.length
   console.log(emojis)
 
