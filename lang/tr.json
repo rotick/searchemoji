@@ -39,5 +39,7 @@
   "inGroup": "Grup",
   "otherPlatform": "Diğer platformda göster",
   "platformImg": "{platform} platformu için {name}",
-  "imgCopyTip": "Resmi kopyalamak veya indirmek için sağ tıklayın"
+  "imgCopyTip": "Resmi kopyalamak veya indirmek için sağ tıklayın",
+  "copied": "Copiado",
+  "yesicon": "Para profesionales: Motor de búsqueda multilingüe de iconos vectoriales, que incluye más de 200k iconos."
 }

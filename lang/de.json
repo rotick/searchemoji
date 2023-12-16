@@ -39,5 +39,7 @@
   "inGroup": "Gruppe",
   "otherPlatform": "Auf anderen Plattformen anzeigen",
   "platformImg": "{name} für {platform} Plattform",
-  "imgCopyTip": "Klicken Sie mit der rechten Maustaste, um das Bild zu kopieren oder herunterzuladen"
+  "imgCopyTip": "Klicken Sie mit der rechten Maustaste, um das Bild zu kopieren oder herunterzuladen",
+  "copied": "Kopiert",
+  "yesicon": "Für Fachleute: Mehrsprachige Vektor-Symbol-Suchmaschine, enthält mehr als 200.000 Symbole."
 }

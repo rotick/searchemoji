@@ -39,5 +39,7 @@
   "inGroup": "Group",
   "otherPlatform": "Display on other platform",
   "platformImg": "{name} for {platform} platform",
-  "imgCopyTip": "Right click to copy or download"
+  "imgCopyTip": "Right click to copy or download",
+  "copied": "Copied",
+  "yesicon": "For professional: Multilingual Vector Icon Search Engine, includes more than 200k icons."
 }

@@ -527,7 +527,7 @@ function modalClick (ev: any) {
         <Yesicon class="color-action text-2xl" />
         <span class="text-xl">👈</span>
       </div>
-      <p class="mt-3 text-sm">For professional: Multilingual Vector Icon Search Engine, includes more than 200k icons.</p>
+      <p class="mt-3 text-sm">{{ $t('yesicon') }}</p>
     </a>
   </aside>
   <main class="mx-4 md:ml-[280px] md:mr-6">

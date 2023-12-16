@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "\uD83D\uDD0DWyszukaj emoji, 🖱️Kliknij, aby skopiować - Wyszukiwarka emoji obsługująca 30 języków",
+    "title": "🔍Wyszukaj emoji, 🖱️Kliknij, aby skopiować - Wyszukiwarka emoji obsługująca 30 języków",
     "description": "Pozwól, że emotikony ożywią twój kontent. SearchEmoji zawiera największą kolekcję emoji z całego świata. Znajdź dokładnie to emoji, którego potrzebujesz dzięki potężnym funkcjom wyszukiwania – wyszukaj według słowa kluczowego lub przeglądaj według kategorii. Podglądaj dowolne emoji i skopiuj je jednym kliknięciem do swoich dokumentów, wiadomości oraz postów na portalach społecznościowych.",
     "detailTitle": "{emoji} {name} - Szczegóły emoji",
     "detailDescription": "{name}({emoji}) został dodany do rodziny emoji w wersji {version}, umieszczony w kategorii [{group}], z kodowaniem Unicode {code} i oficjalnie nazwany jako {oName}",
@@ -39,5 +39,7 @@
   "inGroup": "W grupie",
   "otherPlatform": "Wyświetl na innej platformie",
   "platformImg": "{platform} dla platformy {name}",
-  "imgCopyTip": "Kliknij prawym przyciskiem myszy, aby skopiować lub pobrać obraz"
+  "imgCopyTip": "Kliknij prawym przyciskiem myszy, aby skopiować lub pobrać obraz",
+  "copied": "Skopiowano",
+  "yesicon": "Dla profesjonalistów: Wielojęzyczny silnik wyszukiwania ikon wektorowych, zawiera ponad 200 000 ikon."
 }

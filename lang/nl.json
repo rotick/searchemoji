@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "\uD83D\uDD0DZoek naar Emoji, 🖱️Klik om te kopiëren - Emoji-zoekmachine met ondersteuning voor 30 talen",
+    "title": "🔍Zoek naar Emoji, 🖱️Klik om te kopiëren - Emoji-zoekmachine met ondersteuning voor 30 talen",
     "description": "Laat emoji's leven inblazen in je content. SearchEmoji herbergt de grootste verzameling emoji's van over de hele wereld. Vind precies de emoji die je nodig hebt via krachtige zoekfuncties - door te zoeken op trefwoord of door te bladeren door categorieën. Voorbeeld van een emoji en kopieer deze met één klik naar je documenten, berichten en sociale posts.",
     "detailTitle": "{emoji} {name} - Emoji detail",
     "detailDescription": "{name}({emoji}) werd toegevoegd aan de Emoji-familie in versie {version}, opgenomen in de [{group}] categorie, met een Unicode-encoding van {code} en officieel benoemd als {oName}",
@@ -39,5 +39,7 @@
   "inGroup": "Groep",
   "otherPlatform": "Weergave op ander platform",
   "platformImg": "{name} voor {platform} platform",
-  "imgCopyTip": "Klik met rechts om de afbeelding te kopiëren of te downloaden"
+  "imgCopyTip": "Klik met rechts om de afbeelding te kopiëren of te downloaden",
+  "copied": "Gekopieerd",
+  "yesicon": "Voor professionals: Meertalige Vector Pictogrammen Zoekmachine, bevat meer dan 200k pictogrammen."
 }

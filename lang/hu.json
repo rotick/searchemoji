@@ -39,5 +39,7 @@
   "inGroup": "Csoportban",
   "otherPlatform": "Megjelenítés más platformon",
   "platformImg": "{platform} platformon a(z) {name} képe",
-  "imgCopyTip": "Kattints jobb gombbal a kép másolásához vagy letöltéséhez"
+  "imgCopyTip": "Kattints jobb gombbal a kép másolásához vagy letöltéséhez",
+  "copied": "Másolva",
+  "yesicon": "Professzionális felhasználóknak: többnyelvű vektor ikon keresőmotor, tartalmaz több mint 200 ezer ikont."
 }

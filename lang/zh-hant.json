@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "支援 30 種語言的 Emoji 搜尋引擎。\uD83D\uDD0D一詞搜尋，\uD83D\uDDB1\uFE0F一鍵複製！",
+    "title": "支援 30 種語言的 Emoji 搜尋引擎。🔍一詞搜尋，🖱️一鍵複製！",
     "description": "豐富多彩的 Emoji 助你內容更生動。SearchEmoji 收錄最全的 Emoji 表情庫，並提供強大的搜尋功能，你可以透過關鍵詞精確查找，或者透過分類篩選、預覽，並一鍵複製到你的文章、聊天及社交媒體中。",
     "detailTitle": "{emoji} {name} - Emoji 詳情",
     "detailDescription": "{name}({emoji}) 於 v {version} 版本加入到 Emoji 家族，收錄在 [{group}] 分類中，Unicode 的編碼為 {code}，官方命名為： {oName}",
@@ -39,5 +39,7 @@
   "inGroup": "分組",
   "otherPlatform": "其他平台上的展現",
   "platformImg": "{platform} 平台中的 {name}",
-  "imgCopyTip": "點選右鍵可複製或下載圖片"
+  "imgCopyTip": "點選右鍵可複製或下載圖片",
+  "copied": "已複製",
+  "yesicon": "適用於專業人士：多語言向量圖標搜索引擎，含有超過 20 萬個圖標。"
 }

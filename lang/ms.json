@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "\uD83D\uDD0DCari Emoji, \uD83D\uDDB1\uFE0FKlik untuk Menyalin - Enjin Carian Emoji yang Menyokong 30 Bahasa",
+    "title": "🔍Cari Emoji, 🖱️Klik untuk Menyalin - Enjin Carian Emoji yang Menyokong 30 Bahasa",
     "description": "Biarkan Emojis Menghidupkan Kandungan Anda. SearchEmoji memuatkan koleksi emoji terbesar dari seluruh dunia. Cari emoji yang anda perlukan melalui fungsi carian yang kuat—sama ada dengan kata kunci atau melayari melalui kategori. Pratonton mana-mana emoji dan salinnya dengan sekali klik ke dalam dokumen, mesej, dan pos sosial anda.",
     "detailTitle": "{emoji} {name} - Butiran Emoji",
     "detailDescription": "{name}({emoji}) telah ditambahkan kepada keluarga Emoji dalam versi {version}, dimasukkan dalam kategori [{group}], dengan kod sumber Unicode {code} dan dinamakan secara rasmi sebagai {oName}",
@@ -39,5 +39,7 @@
   "inGroup": "Dalam Kumpulan",
   "otherPlatform": "Paparan di platform lain",
   "platformImg": "{name} untuk platform {platform}",
-  "imgCopyTip": "Klik kanan untuk menyalin atau muat turun imej"
+  "imgCopyTip": "Klik kanan untuk menyalin atau muat turun imej",
+  "copied": "Disalin",
+  "yesicon": "Untuk profesional: Enjin Carian Ikon Vektor Bermultibahasa, termasuk lebih daripada 200k ikon."
 }

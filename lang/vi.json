@@ -39,5 +39,7 @@
   "inGroup": "Nhóm",
   "otherPlatform": "Hiển thị trên nền tảng khác",
   "platformImg": "{platform} cho nền tảng {name}",
-  "imgCopyTip": "Nhấp chuột phải để sao chép hoặc tải ảnh"
+  "imgCopyTip": "Nhấp chuột phải để sao chép hoặc tải ảnh",
+  "copied": "Đã sao chép",
+  "yesicon": "Dành cho chuyên gia: Công cụ tìm kiếm biểu tượng đa ngôn ngữ, bao gồm hơn 200 nghìn biểu tượng."
 }

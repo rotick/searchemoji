@@ -39,5 +39,8 @@
   "inGroup": "Gruppe",
   "otherPlatform": "Vises på annen plattform",
   "platformImg": "{name} for {platform}-plattformen",
-  "imgCopyTip": "Høyreklikk for å kopiere eller laste ned bildet"
+  "imgCopyTip": "Høyreklikk for å kopiere eller laste ned bildet",
+  "copied": "Copied",
+  "yesicon": "For professional: Multilingual Vector Icon Search Engine, includes more than 200k icons.",
+  "zh": { "copied": "已复制", "yesicon": "给专业人士：多语言矢量图标搜索引擎，收录超过 20 万图标！" }
 }

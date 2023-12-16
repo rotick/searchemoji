@@ -39,5 +39,7 @@
   "inGroup": "Gruppo",
   "otherPlatform": "Mostra su altre piattaforme",
   "platformImg": "{name} per la piattaforma {platform}",
-  "imgCopyTip": "Fai clic con il pulsante destro per copiare o scaricare l'immagine"
+  "imgCopyTip": "Fai clic con il pulsante destro per copiare o scaricare l'immagine",
+  "copied": "Copiato",
+  "yesicon": "Per professionisti: motore di ricerca di icone vettoriali multilingue, include più di 200.000 icone."
 }

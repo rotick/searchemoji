@@ -39,5 +39,7 @@
   "inGroup": "分组",
   "otherPlatform": "其他平台上的展现",
   "platformImg": "{platform} 平台中的 {name}",
-  "imgCopyTip": "点击右键可复制或下载图片"
+  "imgCopyTip": "点击右键可复制或下载图片",
+  "copied": "已复制",
+  "yesicon": "给专业人士：多语言矢量图标搜索引擎，收录超过 20 万图标！"
 }

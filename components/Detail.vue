@@ -97,7 +97,7 @@ const platform = [
         <button
           class="px-6 h-12 rounded-2xl bg-rose-500 text-white flex items-center mx-auto my-6 md:tooltip"
           :class="rtl ? 'flex-row-reverse' : ''"
-          :data-tip="`${isMac ? '⌘' : 'Ctrl'} + C`"
+          :data-tip="copied ? $t('copied') : `${isMac ? '⌘' : 'Ctrl'} + C`"
           @click="copy(source)"
         >
           <i

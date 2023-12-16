@@ -39,5 +39,7 @@
   "inGroup": "Grupp",
   "otherPlatform": "Visa på annan plattform",
   "platformImg": "{name} för {platform}-plattform",
-  "imgCopyTip": "Högerklicka för att kopiera eller ladda ner bilden"
+  "imgCopyTip": "Högerklicka för att kopiera eller ladda ner bilden",
+  "copied": "Kopierad",
+  "yesicon": "För professionella: Multispråkig vektorikonssökmotor, inkluderar mer än 200 000 ikoner."
 }

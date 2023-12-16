@@ -39,5 +39,7 @@
   "inGroup": "Gruppe",
   "otherPlatform": "Vis på anden platform",
   "platformImg": "{name} til {platform} platform",
-  "imgCopyTip": "Højreklik for at kopiere eller downloade billedet"
+  "imgCopyTip": "Højreklik for at kopiere eller downloade billedet",
+  "copied": "Kopieret",
+  "yesicon": "Til professionelle: Multisproget Vektor Ikon Søgemaskine, inkluderer mere end 200k ikoner."
 }

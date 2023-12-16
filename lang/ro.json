@@ -39,5 +39,7 @@
   "inGroup": "În grup",
   "otherPlatform": "Afișare pe alte platforme",
   "platformImg": "{name} pentru platforma {platform}",
-  "imgCopyTip": "Faceți clic dreapta pentru a copia sau descărca imaginea"
+  "imgCopyTip": "Faceți clic dreapta pentru a copia sau descărca imaginea",
+  "copied": "Copiat",
+  "yesicon": "Pentru profesioniști: Motor de căutare de icoane vectoriale multilingv, include peste 200k de icoane."
 }

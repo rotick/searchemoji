@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "\uD83D\uDD0DEmoji-haku, 🖱️Napsauta kopioidaksesi - Emoji-hakukone, joka tukee 30 kieltä",
+    "title": "🔍Emoji-haku, 🖱️Napsauta kopioidaksesi - Emoji-hakukone, joka tukee 30 kieltä",
     "description": "Anna Emojien elävöittää sisältöäsi. EtsiEmojista löytyy laajin valikoima emojikuvakkeita ympäri maailman. Löydä juuri se emoji, jonka tarvitset tehokkailla hakutoiminnoilla – etsi avainsanalla tai selaa kategorioiden avulla. Esikatsele mitä tahansa emojia ja kopioi se yhdellä napsautuksella asiakirjoihisi, viesteihisi ja some-julkaisuihisi.",
     "detailTitle": "{emoji} {name} - Emoji-yksityiskohdat",
     "detailDescription": "{name}({emoji}) lisättiin Emojien perheeseen versiossa {version}, se sisältyy [{group}] luokkaan, jossa on Unicode-koodaus {code} ja virallisesti nimetään {oName}",
@@ -39,5 +39,7 @@
   "inGroup": "Ryhmässä",
   "otherPlatform": "Näytä muilla alustoilla",
   "platformImg": "{name} alustalla {platform}",
-  "imgCopyTip": "Napsauta hiiren oikealla painikkeella kopioidaksesi tai ladataksesi kuva"
+  "imgCopyTip": "Napsauta hiiren oikealla painikkeella kopioidaksesi tai ladataksesi kuva",
+  "copied": "Kopioitu",
+  "yesicon": "Ammattilaisille: Monikielinen vektorikuvakkeiden hakukone, sisältää yli 200 000 kuvaketta."
 }
