@@ -43,9 +43,13 @@ function handleCopy (e: KeyboardEvent) {
   }
 }
 const isMac = ref(false)
+const isAndroidQQ = ref(false)
 onMounted(() => {
   document.addEventListener('keydown', handleCopy)
   isMac.value = window.navigator.userAgent.toLowerCase().includes('macintosh')
+  isAndroidQQ.value =
+    window.navigator.userAgent.toLowerCase().includes('android') &&
+    (window.navigator.userAgent.toLowerCase().includes('mqq') || window.navigator.userAgent.toLowerCase().includes('micromessenger'))
 })
 onUnmounted(() => {
   document.removeEventListener('keydown', handleCopy)
@@ -108,6 +112,9 @@ const platform = [
           />
           {{ $t('copyBtn') }}
         </button>
+        <p v-if="isAndroidQQ && locale === 'zh-hans'" class="text-center color-disable text-sm mb-4">
+          点击复制功能在安卓微信或 QQ 浏览器中可能会失效，如果不能复制，可以长按上面的 Emoji 手动复制。或者点击右上角，在浏览器中打开使用本站。
+        </p>
         <div class="flex justify-between border-t border-b border-main py-2" :class="rtl ? 'flex-row-reverse' : ''">
           <span class="shrink-0" :class="rtl ? 'flex-row-reverse ml-4' : 'mr-4'">{{ $t('unicodeName') }}</span> <span>{{ data.n }}</span>
         </div>
