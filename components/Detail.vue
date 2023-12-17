@@ -33,7 +33,7 @@ useHead({
   meta: [{ name: 'description', content: description }]
 })
 const source = computed(() => data.value.e)
-const { copy, copied } = useClipboard({ source })
+const { copy, copied } = useClipboard({ source, legacy: true })
 function handleCopy (e: KeyboardEvent) {
   if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
     const selection = document.getSelection()

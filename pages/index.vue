@@ -330,7 +330,7 @@ function setClickTo (opt: any, close: any) {
   close()
 }
 const source = ref('')
-const { copy, copied } = useClipboard({ source })
+const { copy, copied } = useClipboard({ source, legacy: true })
 function copyEmoji (emoji: string) {
   source.value = emoji
   copy(source.value)
