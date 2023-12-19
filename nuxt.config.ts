@@ -35,7 +35,7 @@ export default defineNuxtConfig({
     locales: locale
   },
   nitro: {
-    preset: 'cloudflare_pages'
+    // preset: 'cloudflare_pages'
   },
   routeRules: {
     '/': { prerender: true }

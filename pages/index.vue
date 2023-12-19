@@ -11,21 +11,38 @@ const flexSearch = new Document({
   document: {
     id: 'c',
     index: [
-      {
-        field: 'e',
-        tokenize: 'forward',
-        resolution: 9
-      },
-      {
-        field: 'n',
-        tokenize: 'forward',
-        resolution: 9
-      },
-      {
-        field: 't',
-        tokenize: 'forward',
-        resolution: 9
-      },
+      // {
+      //   field: 'e',
+      //   tokenize: 'forward',
+      //   resolution: 9
+      // },
+      // {
+      //   field: 'n',
+      //   tokenize: 'forward',
+      //   resolution: 9
+      // },
+      ['zh-hans', 'zh-hant', 'ja', 'ko'].includes(locale.value)
+        ? {
+            field: 't',
+            tokenize: 'forward',
+            encode: str => str.replace(/[\x00-\x7F]/g, '').split(''),
+            resolution: 9
+          }
+        : ['ar', 'he'].includes(locale.value)
+            ? {
+                field: 't',
+                encode: false,
+                tokenize: 'forward',
+                // @ts-expect-error wtf
+                rtl: true,
+                split: /\s+/,
+                resolution: 9
+              }
+            : {
+                field: 't',
+                tokenize: 'forward',
+                resolution: 9
+              },
       {
         field: 'k:en',
         tokenize: 'forward',
@@ -133,6 +150,9 @@ function search () {
   searchResult.value = uniqueByEmoji(searRes)
   searching.value = false
   router.replace({ path: route.path, query: { q: keyword.value || undefined } })
+  useHead({
+    title: keyword.value ? `🔍 ${keyword.value}` : ''
+  })
 }
 function searchInput () {
   searching.value = true
@@ -285,6 +305,7 @@ function setGroupRef (el: HTMLElement, index: number) {
 const y = ref(0)
 const handleScroll = useThrottleFn(() => {
   y.value = document.documentElement.scrollTop
+  console.log(y.value)
   doms.value.forEach(tag => {
     const top = tag?.getBoundingClientRect().top
     // 10px fault tolerance, 148 and 96 see app/router.options.ts

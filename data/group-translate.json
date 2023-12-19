@@ -3599,9 +3599,9 @@
   {
     "name": "country-flag",
     "en": "Country flag",
-    "zh-hans": "国家旗帜",
+    "zh-hans": "国家或地区旗帜",
     "es": "Bandera del país",
-    "zh-hant": "國旗",
+    "zh-hant": "國家或地區旗幟",
     "de": "Länderflagge",
     "ja": "国旗",
     "fr": "Drapeau du pays",
