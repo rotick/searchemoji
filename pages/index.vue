@@ -305,7 +305,6 @@ function setGroupRef (el: HTMLElement, index: number) {
 const y = ref(0)
 const handleScroll = useThrottleFn(() => {
   y.value = document.documentElement.scrollTop
-  console.log(y.value)
   doms.value.forEach(tag => {
     const top = tag?.getBoundingClientRect().top
     // 10px fault tolerance, 148 and 96 see app/router.options.ts
@@ -641,7 +640,7 @@ function modalClick (ev: any) {
   <Footer />
   <div
     v-show="y > 400"
-    class="cursor-pointer fixed right-4 bottom-4 card w-12 h-12 rounded-2xl flex justify-center items-center shadow-2xl md:tooltip"
+    class="cursor-pointer !fixed right-4 bottom-4 card w-12 h-12 rounded-2xl flex justify-center items-center shadow-2xl md:tooltip"
     :data-tip="$t('backTop')"
     @click="backTop"
   >
