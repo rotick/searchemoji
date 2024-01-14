@@ -31,7 +31,7 @@ function closeDropDown () {
   <div ref="wrap" class="relative" @click="toggleShow">
     <slot :active="show" />
     <div
-      v-if="show"
+      v-show="show"
       class="absolute"
       :style="{ top: `${top}px`, left: left !== undefined ? `${left}px` : undefined, right: right !== undefined ? `${right}px` : undefined }"
       @click.stop
