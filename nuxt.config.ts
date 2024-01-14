@@ -24,6 +24,9 @@ export default defineNuxtConfig({
       }
     }
   },
+  sitemap: {
+    enabled: false
+  },
   colorMode: {
     classSuffix: '',
     preference: 'dark',

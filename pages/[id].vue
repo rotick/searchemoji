@@ -10,9 +10,22 @@ const isMac = ref(false)
 onMounted(() => {
   isMac.value = window.navigator.userAgent.toLowerCase().includes('macintosh')
   isMobile.value = window.innerWidth <= 768
+  document.addEventListener('keydown', handleKeydown)
+})
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown)
 })
 function search () {
   router.push({ path: localePath('/'), query: { q: keyword.value || undefined } })
+}
+const searchInputRef = ref<HTMLElement>()
+function handleKeydown (e: KeyboardEvent) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault()
+    searchInputRef.value?.focus()
+    // @ts-expect-error-next-line
+    searchInputRef.value?.select()
+  }
 }
 </script>
 
