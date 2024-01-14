@@ -380,6 +380,16 @@ const itemList = computed(() => ({
 }))
 useSchemaOrg([
   defineWebSite({
+    // delete when nuxt-schema-org fix the bug
+    // '@id': 'https://searchemoji.app/#website',
+    // '@type': 'WebSite',
+    // description: t('seo.title'),
+    // inLanguage: locale.value,
+    // name: 'SearchEmoji',
+    // url: 'https://searchemoji.app',
+    // publisher: {
+    //   '@id': 'https://searchemoji.app/#identity'
+    // },
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -389,6 +399,19 @@ useSchemaOrg([
       'query-input': 'required name=search_term_string'
     }
   }),
+  // defineWebPage({
+  //   '@id': `https://searchemoji.app${localePath('/')}/#webpage`,
+  //   '@type': 'WebPage',
+  //   description: t('seo.description'),
+  //   name: t('seo.title'),
+  //   url: `https://searchemoji.app${localePath('/')}`,
+  //   about: {
+  //     '@id': 'https://searchemoji.app/#identity'
+  //   },
+  //   isPartOf: {
+  //     '@id': 'https://searchemoji.app/#website'
+  //   }
+  // }),
   itemList
 ])
 </script>

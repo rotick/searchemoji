@@ -92,13 +92,40 @@ const platform = [
     imgPath: 'whatsapp'
   }
 ]
+const localePath = useLocalePath()
 const schema = computed(() => [
+  // delete when nuxt-schema-org fix the bug, delete defineWebSite and defineWebPage
+  // defineWebSite({
+  //   '@id': 'https://searchemoji.app/#website',
+  //   '@type': 'WebSite',
+  //   description: t('seo.title'),
+  //   inLanguage: locale.value,
+  //   name: 'SearchEmoji',
+  //   url: 'https://searchemoji.app',
+  //   publisher: {
+  //     '@id': 'https://searchemoji.app/#identity'
+  //   }
+  // }),
+  // defineWebPage({
+  //   '@id': `https://searchemoji.app${localePath('/' + data.value?.c || '')}/#webpage`,
+  //   '@type': 'WebPage',
+  //   description: description.value,
+  //   name: title.value,
+  //   url: localePath('/' + data.value?.c || ''),
+  //   about: {
+  //     '@id': 'https://searchemoji.app/#identity'
+  //   },
+  //   isPartOf: {
+  //     '@id': 'https://searchemoji.app/#website'
+  //   }
+  // }),
   {
-    '@id': data.value?.c || '',
+    '@id': `https://searchemoji.app${localePath('/' + data.value?.c || '')}/#VisualArtwork`,
     '@type': 'VisualArtwork',
     name: data.value?.t || '',
     alternateName: data.value?.n || '',
     keywords: data.value?.k.join(',') || '',
+    url: localePath('/' + data.value?.c || ''),
     creator: {
       '@type': 'Organization',
       name: 'Unicode',

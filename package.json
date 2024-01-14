@@ -54,6 +54,7 @@
     "husky": "^8.0.0",
     "json-stringify-pretty-compact": "^4.0.0",
     "nuxt": "^3.9.1",
+    "nuxt-schema-org": "3.2.3",
     "nuxt-gtag": "^1.1.1",
     "prettier": "^3.0.3",
     "tsx": "^4.1.1",
