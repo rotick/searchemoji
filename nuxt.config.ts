@@ -5,7 +5,25 @@ export default defineNuxtConfig({
   devServer: {
     port: 4000
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxtjs/eslint-module', '@nuxtjs/i18n', 'nuxt-gtag', '@nuxtjs/google-fonts'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxtjs/eslint-module', '@nuxtjs/i18n', 'nuxt-gtag', '@nuxtjs/google-fonts', '@nuxtjs/seo'],
+  site: {
+    url: 'https://searchemoji.app',
+    name: 'SearchEmoji',
+    description: '\uD83D\uDD0DSearch for Emoji, \uD83D\uDDB1\uFE0FClick to Copy - Emoji Search Engine Supporting 30 Languages'
+  },
+  schemaOrg: {
+    identity: {
+      type: 'Organization',
+      name: 'SearchEmoji',
+      url: 'https://searchemoji.app',
+      logo: 'https://searchemoji.app/logo.png',
+      founder: {
+        type: 'Person',
+        name: 'dongnaebi',
+        sameAs: ['https://twitter.com/dongnaebi', 'https://github.com/dongnaebi']
+      }
+    }
+  },
   colorMode: {
     classSuffix: '',
     preference: 'dark',

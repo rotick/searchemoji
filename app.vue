@@ -3,6 +3,7 @@
 </template>
 <script setup lang="ts">
 const { t } = useI18n()
+const route = useRoute()
 const i18nHead = useLocaleHead({
   addSeoAttributes: true
 })
@@ -14,7 +15,7 @@ useHead({
     lang: i18nHead.value.htmlAttrs?.lang
   },
   titleTemplate: titleChunk => {
-    return titleChunk ? `${titleChunk} - SearchEmoji` : `${t('seo.title')}`
+    return (route.name as string).startsWith('index') && !route.query.q ? titleChunk || t('seo.title') : `${titleChunk} - SearchEmoji`
   },
   link: [
     ...(i18nHead.value.link || []),

@@ -84,6 +84,28 @@ const platform = [
     imgPath: 'whatsapp'
   }
 ]
+const schema = computed(() => [
+  {
+    '@id': data.value?.c || '',
+    '@type': 'VisualArtwork',
+    name: data.value?.t || '',
+    alternateName: data.value?.n || '',
+    keywords: data.value?.k[locale.value].join(',') || '',
+    creator: {
+      '@type': 'Organization',
+      name: 'Unicode',
+      url: 'https://unicode.org/'
+    },
+    image: {
+      '@type': 'ImageObject',
+      contentUrl: `https://img.searchemoji.app/emoji-images/apple/${data.value?.c.toLowerCase()}.webp`,
+      width: 144,
+      height: 144
+    },
+    version: data.value?.v || ''
+  }
+])
+useSchemaOrg(schema)
 </script>
 
 <template>

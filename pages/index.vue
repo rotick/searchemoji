@@ -396,6 +396,22 @@ function modalClick (ev: any) {
   if (ev.composedPath().find((p: any) => p.className?.includes?.('inner'))) return
   closeDetail()
 }
+const { t } = useI18n()
+useHead({
+  title: t('seo.title')
+})
+useSchemaOrg([
+  defineWebSite({
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `https://searchemoji.app${localePath('/')}?q={search_term_string}`
+      },
+      'query-input': 'required name=search_term_string'
+    }
+  })
+])
 </script>
 
 <template>
@@ -550,7 +566,8 @@ function modalClick (ev: any) {
       <p class="mt-3 text-sm">{{ $t('yesicon') }}</p>
     </a>
   </aside>
-  <main class="mx-4 md:ml-[280px] md:mr-6">
+  <main class="mx-4 md:ml-[280px] md:mr-6" itemscope itemtype="https://schema.org/ItemList">
+    <link rel="stylesheet" itemprop="sameAs" href="https://en.wikipedia.org/wiki/Emoji">
     <div class="flex items-center md:justify-between h-11 md:h-[72px]">
       <div class="flex items-center flex-grow justify-between md:justify-start">
         <div class="flex items-center" :class="rtl ? 'flex-row-reverse' : ''">
@@ -601,32 +618,32 @@ function modalClick (ev: any) {
         "
         class="card p-2 md:p-4 mb-6 rounded-2xl"
       >
-        <div v-for="sg in g.children" :key="sg.name">
+        <div v-for="(sg, j) in g.children" :key="sg.name">
           <h3 v-if="groupBySubGroup" class="pl-2 mb-2 mt-4">{{ sg.localeName }}</h3>
-          <div class="grid flex-wrap gap-1" style="grid-template-columns: repeat(auto-fill, minmax(72px, 1fr))">
+          <div
+            class="grid flex-wrap gap-1 emoji-box"
+            style="grid-template-columns: repeat(auto-fill, minmax(72px, 1fr))"
+            :style="{ fontSize: `${renderEmojiSize}px` }"
+          >
             <template v-if="clickTo === 'detail'">
               <NuxtLink
-                v-for="d in sg.data"
+                v-for="(d, k) in sg.data"
                 :key="d.e"
                 :to="localePath(`/${d.c}`)"
-                :style="{ fontSize: `${renderEmojiSize}px` }"
-                class="md:tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl"
-                :data-tip="d.t"
+                itemscope
+                itemtype="https://schema.org/VisualArtwork"
+                itemprop="itemListElement"
               >
-                <span class="inline-block overflow-hidden w-full text-center emoji-text">{{ d.e }}</span>
+                <link :href="localePath(`/${d.c}`)" itemprop="url">
+                <i itemprop="position" class="hidden">{{ i * 10000 + j * 100 + k }}</i>
+                <h4 itemprop="alternateName">{{ d.e }}</h4>
+                <p itemprop="name">{{ d.t }}</p>
               </NuxtLink>
             </template>
             <template v-if="clickTo === 'copy'">
-              <a
-                v-for="d in sg.data"
-                :key="d.e"
-                href="javascript:;"
-                :style="{ fontSize: `${renderEmojiSize}px` }"
-                class="md:tooltip min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl relative"
-                :data-tip="$t('clickToCopy') + d.t"
-                @click="copyEmoji(d.e)"
-              >
-                <span class="inline-block overflow-hidden w-full text-center emoji-text">{{ d.e }}</span>
+              <a v-for="d in sg.data" :key="d.e" href="javascript:;" @click="copyEmoji(d.e)">
+                <h4>{{ d.e }}</h4>
+                <p>{{ $t('clickToCopy') + d.t }}</p>
                 <div v-if="source === d.e && copied" class="absolute left-0 top-0 w-full h-full rounded-2xl bg-black/50 flex justify-center items-center">
                   <i class="icon-[material-symbols--check-circle] text-xl text-green-500" aria-hidden="true" role="img" />
                 </div>
@@ -668,7 +685,17 @@ function modalClick (ev: any) {
 </template>
 
 <style scoped>
-.emoji-text {
+.emoji-box a {
+  @apply relative min-w-[72px] h-16 flex justify-center items-center hover:card rounded-2xl;
+}
+.emoji-box a h4 {
+  @apply inline-block overflow-hidden w-full text-center;
   content-visibility: auto;
+}
+.emoji-box a p {
+  @apply hidden absolute top-0 left-[50%] w-[auto] translate-x-[-50%] translate-y-[-105%] whitespace-nowrap z-10 bg-zinc-900 shadow-sm text-white py-1 px-2 text-sm rounded-lg;
+}
+.emoji-box a:hover p {
+  @apply md:block;
 }
 </style>
