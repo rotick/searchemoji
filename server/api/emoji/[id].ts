@@ -15,10 +15,7 @@ export default defineEventHandler(ev => {
   const emoji = {
     ...res,
     t: res.t?.[locale] || null,
-    k: {
-      en: res.k?.en || [],
-      [locale]: res.k?.[locale] || []
-    },
+    k: res.k?.[locale] || [],
     g: groupName.nt,
     s: subGroupName.nt
   }

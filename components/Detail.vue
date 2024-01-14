@@ -10,13 +10,21 @@ const route = useRoute()
 const { locale, t } = useI18n()
 const rtl = computed(() => ['ar', 'he'].includes(locale.value))
 
-const id = route.params.id
-const { data, error, execute } = useFetch(`/api/emoji/${id}`, { query: { locale: locale.value }, immediate: process.server })
-if (props.emoji) {
-  data.value = props.emoji
-} else {
-  execute()
+const defaultData = {
+  c: props.emoji?.c || '',
+  q: '',
+  e: props.emoji?.e || '',
+  v: '',
+  n: '',
+  g: props.emoji?.g || '',
+  s: props.emoji?.s || '',
+  t: props.emoji?.t || '',
+  k: []
 }
+const id = props.emoji?.c || route.params.id
+const { data: fetchData, error } = useFetch(`/api/emoji/${id}`, { query: { locale: locale.value } })
+const data = computed(() => fetchData.value || defaultData)
+
 const title = computed(() => t('seo.detailTitle', { emoji: data.value.e, name: data.value.t }))
 const description = computed(() =>
   t('seo.detailDescription', {
@@ -90,7 +98,7 @@ const schema = computed(() => [
     '@type': 'VisualArtwork',
     name: data.value?.t || '',
     alternateName: data.value?.n || '',
-    keywords: data.value?.k[locale.value].join(',') || '',
+    keywords: data.value?.k.join(',') || '',
     creator: {
       '@type': 'Organization',
       name: 'Unicode',
@@ -143,9 +151,7 @@ useSchemaOrg(schema)
         <div class="flex justify-between border-b border-main py-2" :class="rtl ? 'flex-row-reverse' : ''">
           <span class="shrink-0 my-0.5" :class="rtl ? 'flex-row-reverse ml-4' : 'mr-4'">{{ $t('searchKeyword') }}</span>
           <div class="flex items-center flex-wrap justify-end" :class="rtl ? 'flex-row-reverse' : ''">
-            <span v-for="k in data.k[locale]" :key="k" class="card color-action rounded-xl px-2 my-0.5" :class="rtl ? 'flex-row-reverse mr-1' : 'ml-1'">{{
-              k
-            }}</span>
+            <span v-for="k in data.k" :key="k" class="card color-action rounded-xl px-2 my-0.5" :class="rtl ? 'flex-row-reverse mr-1' : 'ml-1'">{{ k }}</span>
           </div>
         </div>
         <div class="flex justify-between border-b border-main py-2" :class="rtl ? 'flex-row-reverse' : ''">

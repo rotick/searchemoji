@@ -12,10 +12,13 @@ export default defineEventHandler(ev => {
       (!li.n.includes('skin tone') || (li.n.includes('skin tone') && (skinTone.find(fst => li.n.includes(' ' + fst)) || li.s === skinToneSubGroupIndex)))
   )
 
-  return filtered.map((emoji: any) => ({
+  const emojis = filtered.map((emoji: any) => ({
     c: emoji.c,
-    n: emoji.n,
-    t: emoji.t?.[locale],
-    k: emoji.k?.[locale]
+    e: emoji.e,
+    g: emoji.g,
+    s: emoji.s,
+    t: emoji.t[locale]
   }))
+
+  return { groups, emojis }
 })

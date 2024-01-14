@@ -22,7 +22,8 @@ export default defineNuxtConfig({
         name: 'dongnaebi',
         sameAs: ['https://twitter.com/dongnaebi', 'https://github.com/dongnaebi']
       }
-    }
+    },
+    minify: true
   },
   sitemap: {
     enabled: false

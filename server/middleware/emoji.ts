@@ -46,6 +46,46 @@ import groupsData from '../../data/group-translate.json'
 //   })
 //   return loadGroupsPromise
 // }
+function extractName (str: string) {
+  if (str.includes(':') && !str.includes(',')) {
+    str = str.replace(/: \w+(-\w+)* skin tone/g, '')
+  }
+  if (str.includes(':') && str.includes(',')) {
+    str = str
+      .replace(/\w+(-\w+)* skin tone, /g, '')
+      .replace(/(,|:) \w+(-\w+)* skin tone/g, '')
+      .replace(/ \w+(-\w+)* skin tone/g, '')
+  }
+  return str.trim()
+}
+const skinToneGroupIndex = groupsData.findIndex(gn => gn.name === 'People & Body')
+const hasSkinTone = emojisData
+  .filter(ve => ve.g === skinToneGroupIndex && !ve.n.includes('skin tone'))
+  .reduce((acc, cur) => {
+    acc[cur.n] = cur
+    return acc
+  }, {})
+const langs = Object.keys(emojisData[0].t)
+for (const item of emojisData) {
+  // To save tokens, tone-modified emoji will not have their own separate keyword generation, but will share the keywords from their non-tone-modified versions.
+  if (item.n.includes('skin tone') && !item.t) {
+    const name = extractName(item.n)
+    const target = hasSkinTone[name]
+    item.t = {}
+    if (target) {
+      for (const i in target.t) {
+        item.t[i] = `${target.t[i]} (${item.n})`
+      }
+      item.k = target.k
+    } else {
+      item.k = {}
+      for (const i of langs) {
+        item.t[i] = item.n
+        item.k[i] = [item.n]
+      }
+    }
+  }
+}
 export default defineEventHandler(async event => {
   // await loadEmojiData().catch(err => {
   //   console.log(err)
