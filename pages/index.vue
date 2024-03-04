@@ -617,7 +617,7 @@ useSchemaOrg([
             setGroupRef(el, i)
           }
         "
-        class="card p-2 md:p-4 mb-6 rounded-2xl"
+        class="card no-backdrop p-2 md:p-4 mb-6 rounded-2xl"
       >
         <div v-for="sg in g.children" :key="sg.name">
           <h3 v-if="groupBySubGroup" class="pl-2 mb-2 mt-4">{{ sg.localeName }}</h3>
