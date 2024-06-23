@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
+    "build:image": "docker build -t searchemoji:latest .",
+    "deploy:image": "npm run build && docker buildx build --platform linux/amd64,linux/arm64 -t dongnaebi/searchemoji:latest --push .",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "generateEmojiData": "tsx ./scripts/generateEmojiData.ts",
@@ -11,6 +13,7 @@
     "generateGroupName": "tsx ./scripts/generateGroupName.ts",
     "generateLocale": "tsx ./scripts/generateLocale.ts",
     "preview": "nuxt preview",
+    "preview:docker": "docker stop searchemoji | xargs docker rm & docker run -d -p 8081:8081 --name searchemoji searchemoji:latest",
     "postinstall": "nuxt prepare",
     "prepare": "husky install",
     "copyData": "tsx ./scripts/copyFile.ts"
